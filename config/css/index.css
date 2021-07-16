@@ -1,0 +1,83 @@
+body{
+    padding: 0 !important;
+}
+.col {
+    height: 50px;
+}
+.top {
+    height: 80px;
+}
+.top .btn{
+    margin: 15px 0;
+}
+.title{
+    height: 40px;
+}
+.title h4{
+    margin-left: 10px;
+}
+.breadcrumb{
+    margin-right: 20px;
+    line-height: 30px;
+}
+table thead .buy, table tbody .buy, table thead .com-estoque th{
+    background-color: #dcf6e9;
+}
+table thead .sell, table tbody .sell, .sem-estoque{
+    background-color: #f6dcdc;
+}
+.com-estoque th, .sem-estoque th{
+    text-align: center;
+    font-size: 2.2rem;
+}
+img{
+    /*background: url('../../img/avatar.jpg') center/cover;*/
+}
+.pagination{
+    margin: 8px;
+}
+.alert-success{
+    background-color: #d5f8da !important;
+    color: #076111 !important;
+    font-size: 20px;
+    font-weight: bold;
+}
+.alert-danger{
+    background-color: #f8d9d5 !important;
+    color: #7e2c17 !important;
+    font-size: 20px;
+    font-weight: bold;
+}
+.alert-primary{
+    background-color: #d5ddf8 !important;
+    color: #173f7e !important;
+    font-size: 20px;
+    font-weight: bold;
+}
+.alert-warning{
+    background-color: #f8ebd5 !important;
+    color: #7e5117 !important;
+    font-size: 20px;
+    font-weight: bold;
+}
+.programado{
+    background-color: #eff5a1;
+}
+.antecipado{
+    background-color: #a1c5f5;
+}
+.efetuado{
+    background-color: #a8f5a1;
+}
+.atrasado{
+    background-color: #f5a1a1;
+}
+.naoexecutou{
+    background-color: #f5d5a1;
+}
+input[type=radio]{
+    margin-top: 30px;
+}
+form .obrigatorio{
+    color: #f60606;
+}
