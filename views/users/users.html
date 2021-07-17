@@ -33,8 +33,6 @@
               <tr>
                 <th style="width: 10px">#</th>
                 <th>Nome</th>
-                <th>RG</th>
-                <th>CPF</th>
                 <th>Telefone</th>
                 <th>Login</th>
                 <th style="width: 60px">Admin</th>
@@ -44,16 +42,14 @@
             <tbody>
               {loop="$users"}
               <tr>
-                <td>{$value.user_id}</td>
-                <td>{$value.name_person}</td>
-                <td>{$value.rg_person}</td>
-                <td>{$value.cpf_person}</td>
-                <td>{$value.phonenumber}</td>
+                <td>{$value.usuario_id}</td>
+                <td>{$value.nome}</td>
+                <td>{$value.nrocelular}</td>
                 <td>{$value.login}</td/>
                 <td>{if="$value.inadmin == 1"}Sim{else}Não{/if}</td>
                 <td>
-                  <a href="/users/{$value.person_id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
-                  <a href="/users/{$value.person_id}/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                  <a href="/users/{$value.pessoa_id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
+                  <a href="/users/{$value.pessoa_id}/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
                 </td>
               </tr>
               {/loop}

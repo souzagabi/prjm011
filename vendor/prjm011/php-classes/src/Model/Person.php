@@ -5,6 +5,7 @@
     use \PRJM011\Mailer;
     
     class Person extends Model {
+        
         public static function listAll()
         {
             $sql = new Sql();

@@ -1,4 +1,4 @@
-<div class="content-wrapper">
+<?php if(!class_exists('Rain\Tpl')){exit;}?><div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
@@ -21,7 +21,7 @@
             </form>
           </div>
           
-          <form action="/cliente" method="get" {if="!$clientes"}hidden{/if}>
+          <form action="/cliente" method="get" <?php if( !$clientes ){ ?>hidden<?php } ?>>
             <div class="col col-md-2"><label for="nome">Nome</label><input type="text" name="nome" id="nome" class="form-control"></div>
             <div class="col col-md-2"><label for="date_save">Data Inicio</label><input type="text" name="date_save" id="date_save" class="form-control" onChange="replaceSlash(date_save)"></div>
             <div class="col col-md-2"><label for="date_fim">Data Fim</label><input type="text" name="date_fim" id="date_fim" class="form-control" onChange="replaceSlash(date_fim)"></div>
@@ -39,12 +39,12 @@
         </div>
       </div>
     </div>
-    <div id="msg{if="$msg.state == 'SUCCESS'"}-success{else}-danger{/if}" 
-          class="box box-{if="$msg.state == 'SUCCESS'"}-success{else}danger{/if}" 
-          {if="$msg.state != 'SUCCESS' && $msg.state != 'ERROR'"}readonly hidden{/if}>
-      <div class="msg"><input type="text" class="form-control msg-{if="$msg.state == 'SUCCESS' "}success alert-success{else}danger alert-danger{/if}" name="msg" value="{$msg.msg}" ></div>
+    <div id="msg<?php if( $msg["state"] == 'SUCCESS' ){ ?>-success<?php }else{ ?>-danger<?php } ?>" 
+          class="box box-<?php if( $msg["state"] == 'SUCCESS' ){ ?>-success<?php }else{ ?>danger<?php } ?>" 
+          <?php if( $msg["state"] != 'SUCCESS' && $msg["state"] != 'ERROR' ){ ?>readonly hidden<?php } ?>>
+      <div class="msg"><input type="text" class="form-control msg-<?php if( $msg["state"] == 'SUCCESS'  ){ ?>success alert-success<?php }else{ ?>danger alert-danger<?php } ?>" name="msg" value="<?php echo htmlspecialchars( $msg["msg"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" ></div>
     </div>
-    <div class="box box-primary" {if="!$pgs"}hidden{/if}>
+    <div class="box box-primary" <?php if( !$pgs ){ ?>hidden<?php } ?>>
       <div class="row">
         <div class="col col-md-12">
           <nav aria-label="Page navigation">
@@ -54,11 +54,11 @@
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
-              {$i = 1}
-              {loop="$pgs"}
+              <?php $i = 1; ?>
+              <?php $counter1=-1;  if( isset($pgs) && ( is_array($pgs) || $pgs instanceof Traversable ) && sizeof($pgs) ) foreach( $pgs as $key1 => $value1 ){ $counter1++; ?>
               
-              <li><a href="cliente?pg={$i}{if="$pgs.list.nome"}&nome={$pgs.list.nome}{/if}">{$i++}</a></li>
-              {/loop}
+              <li><a href="cliente?pg=<?php echo htmlspecialchars( $i, ENT_COMPAT, 'UTF-8', FALSE ); ?><?php if( $pgs["list"]["nome"] ){ ?>&nome=<?php echo htmlspecialchars( $pgs["list"]["nome"], ENT_COMPAT, 'UTF-8', FALSE ); ?><?php } ?>"><?php echo htmlspecialchars( $i++, ENT_COMPAT, 'UTF-8', FALSE ); ?></a></li>
+              <?php } ?>
               <li>
                 <a href="#" aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
@@ -69,7 +69,7 @@
         </div>
       </div>
     </div>
-    <div class="box box-primary" {if="!$clientes"}hidden{/if}>
+    <div class="box box-primary" <?php if( !$clientes ){ ?>hidden<?php } ?>>
       <div class="box-body no-padding">
         <table class="table table-straped">
           <thead class="thead-dark">
@@ -81,22 +81,22 @@
             </tr>
           </thead>
           <tbody>
-            {loop="$clientes"}
+            <?php $counter1=-1;  if( isset($clientes) && ( is_array($clientes) || $clientes instanceof Traversable ) && sizeof($clientes) ) foreach( $clientes as $key1 => $value1 ){ $counter1++; ?>
             <tr>
-              <th>{$value.pessoa_id}</th>
-              <td>{$value.nome}</td>
-              <td>{$value.nrocelular}</td>
+              <th><?php echo htmlspecialchars( $value1["pessoa_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></th>
+              <td><?php echo htmlspecialchars( $value1["nome"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+              <td><?php echo htmlspecialchars( $value1["nrocelular"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
               <td>
-                <a href="/cliente/{$value.pessoa_id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
-                <a href="/cliente/{$value.pessoa_id}/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                <a href="/cliente/<?php echo htmlspecialchars( $value1["pessoa_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
+                <a href="/cliente/<?php echo htmlspecialchars( $value1["pessoa_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
               </td>
             </tr>
-            {/loop}
+            <?php } ?>
           </tbody>
         </table>
       </div>
     </div>
-    <div class="box box-primary" {if="!$pgs"}hidden{/if}>
+    <div class="box box-primary" <?php if( !$pgs ){ ?>hidden<?php } ?>>
       <div class="row">
         <div class="col col-md-12">
           <nav aria-label="Page navigation">
@@ -106,10 +106,10 @@
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
-              {$i = 1}
-              {loop="$pgs"}
-              <li><a href="cliente?pg={$i}{if="$pgs.list.nome"}&nome={$pgs.list.nome}{/if}">{$i++}</a></li>
-              {/loop}
+              <?php $i = 1; ?>
+              <?php $counter1=-1;  if( isset($pgs) && ( is_array($pgs) || $pgs instanceof Traversable ) && sizeof($pgs) ) foreach( $pgs as $key1 => $value1 ){ $counter1++; ?>
+              <li><a href="cliente?pg=<?php echo htmlspecialchars( $i, ENT_COMPAT, 'UTF-8', FALSE ); ?><?php if( $pgs["list"]["nome"] ){ ?>&nome=<?php echo htmlspecialchars( $pgs["list"]["nome"], ENT_COMPAT, 'UTF-8', FALSE ); ?><?php } ?>"><?php echo htmlspecialchars( $i++, ENT_COMPAT, 'UTF-8', FALSE ); ?></a></li>
+              <?php } ?>
               <li>
                 <a href="#" aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>

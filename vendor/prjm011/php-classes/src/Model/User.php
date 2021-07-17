@@ -13,7 +13,11 @@
         {
             $sql = new Sql();
 
-            $results = $sql->select("SELECT PRJM002.pessoa_id, PRJM002.nome, PRJM002.classificacao_id, PRJM004.usuario_id, PRJM004.senha, PRJM004.inadmin FROM PRJM011002 PRJM002 INNER JOIN PRJM011004 PRJM004 ON PRJM004.pessoa_id = PRJM002.pessoa_id WHERE PRJM004.login = :LOGIN", array(
+            $results = $sql->select("SELECT PRJM002.pessoa_id, PRJM002.nome, PRJM002.classificacao_id,
+                                        PRJM004.usuario_id, PRJM004.senha, PRJM004.inadmin 
+                                        FROM PRJM011002 PRJM002 
+                                        INNER JOIN PRJM011004 PRJM004 ON PRJM004.pessoa_id = PRJM002.pessoa_id 
+                                        WHERE PRJM004.login = :LOGIN", array(
                 ":LOGIN"=>$login
             ));
             
@@ -63,7 +67,13 @@
         public static function listAll()
         {
             $sql = new Sql();
-            return $sql->select("SELECT * FROM PRJM011004 PRJM004 INNER JOIN PRJM011002 PRJM002 USING(pessoa_id) ORDER BY PRJM002.nome");
+            return $sql->select("SELECT PRJM002.pessoa_id, PRJM002.nome, PRJM002.classificacao_id,
+                                    PRJM003.celular_id, PRJM003.nrocelular,
+                                    PRJM004.usuario_id, PRJM004.login, PRJM004.senha, PRJM004.inadmin 
+                                    FROM PRJM011002 PRJM002 
+                                    INNER JOIN PRJM011003 PRJM003 ON PRJM003.pessoa_id = PRJM002.pessoa_id 
+                                    INNER JOIN PRJM011004 PRJM004 ON PRJM004.pessoa_id = PRJM002.pessoa_id 
+                                    ORDER BY PRJM002.nome");
         }
 
         public function get($pessoa_id) 

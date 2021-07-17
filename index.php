@@ -42,31 +42,20 @@
 			$_GET["msg"] = '';
 		} 
 
-		// if ((isset($_GET["date_save"]) && $_GET["date_save"] != '')) {
-		// 	$gget = Metodo::convertDateToDataBase(["date_save"=>$_GET["date_save"]]);
+		
+		foreach ($_GET as $key => $value) {
+			$company[$key] = $value;
+		}
+		$company["clientes"]	= "clientes";
 
-		// 	foreach ($gget as $key => $value) {
-		// 		$_GET[$key] = $value;
-		// 	}
-		// } 
-		// if ( (isset($_GET["date_fim"]) && $_GET["date_fim"] != '')) 
-		// {
-		// 	$gget = Metodo::convertDateToDataBase(["date_fim"=>$_GET["date_fim"]]);
+		$clientes = Metodo::selectRegister($company, "Cliente");
 
-		// 	foreach ($gget as $key => $value) {
-		// 		$_GET[$key] = $value;
-		// 	}
-		// } 
-
-		// foreach ($_GET as $key => $value) {
-		// 	$company[$key] = $value;
-		// }
-		// $company["clientes"]	= "clientes";
-		// $clientes = Metodo::selectRegister($company, "Cliente");
-		$clientes = [];
+		$pgs = 0;
 		$page = new PageCliente();
 		$page->setTpl("cliente", array(
-			":Clientes"=>$clientes
+			"clientes"=>$clientes[0],
+			"pgs"=>$clientes[1],
+			"msg"=>$msg
 		));
 	});
 
