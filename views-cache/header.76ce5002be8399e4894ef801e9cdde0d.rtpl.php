@@ -230,44 +230,7 @@ desired effect
 
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
-      <li><a href="<?php if( $_SESSION['User']["inadmin"] != '' ){ ?>/visitant?pg=1<?php } ?>"><i class="fa fa-users"></i> <span>Controle Visitas</span></a></li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Grupo de Resíduos</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-        <ul class="treeview-menu">
-          <li><a href="<?php if( $_SESSION['User']["inadmin"] != '' ){ ?>/residual?pg=1<?php } ?>"><i class="fa fa-trash"></i> <span>Controle Resíduos</span></a></li>
-          <li <?php if( $_SESSION['User']["inadmin"] == 0 ){ ?> hidden<?php } ?>><a href="<?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>/material?pg=1<?php } ?>"><i class="fa fa-shopping-basket"></i> <span>Controle Material</span></a></li>
-        </ul>
-      </li>
-      <li class="treeview">
-        <a href="#"><i class="fa fa-link"></i> <span>Grupo de Produtos</span>
-          <span class="pull-right-container">
-            <i class="fa fa-angle-left pull-right"></i>
-          </span>
-        </a>
-        <ul class="treeview-menu">
-          <li><a href="<?php if( $_SESSION['User']["inadmin"] != '' ){ ?>/goods?pg=1<?php } ?>"><i class="fa fa-shopping-cart"></i> <span>Controle Mercadorias</span></a></li>
-          <li <?php if( $_SESSION['User']["inadmin"] == 0 ){ ?> hidden<?php } ?>><a href="<?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>/clothing?pg=1<?php } ?>"><i class="fa fa-flag"></i> <span>Controle Roupa</span></a></li>
-        </ul>
-      </li>
-      <li class="treeview" <?php if( $_SESSION['User']["inadmin"] == 0 ){ ?> hidden<?php } ?>>
-        <a href="#"><i class="fa fa-link"></i> <span>Grupo de Equipamentos</span>
-          <span class="pull-right-container">
-            <i class="fa fa-angle-left pull-right"></i>
-          </span>
-        </a>
-        <ul class="treeview-menu">
-          <li <?php if( $_SESSION['User']["inadmin"] == 0 ){ ?> hidden<?php } ?>><a href="<?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>/nobreak?pg=1<?php } ?>"><i class="fa fa-bolt"></i> <span>Controle NoBreak</span></a></li>
-          <li <?php if( $_SESSION['User']["inadmin"] == 0 ){ ?> hidden<?php } ?>><a href="<?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>/purifier?pg=1<?php } ?>"><i class="fa fa-flask"></i> <span>Controle Purificador</span></a></li>
-          <li <?php if( $_SESSION['User']["inadmin"] == 0 ){ ?> hidden<?php } ?>><a href="<?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>/airconditioning?pg=1<?php } ?>"><i class="fa fa-tint"></i> <span>Controle Ar Condicionado</span></a></li>
-          <li <?php if( $_SESSION['User']["inadmin"] == 0 ){ ?> hidden<?php } ?>><a href="<?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>/hydrant?pg=1<?php } ?>"><i class="fa fa-fire"></i> <span>Controle Hidrante</span></a></li>
-          <li <?php if( $_SESSION['User']["inadmin"] == 0 ){ ?> hidden<?php } ?>><a href="<?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>/fireexting?pg=1<?php } ?>"><i class="fa fa-fire-extinguisher"></i> <span>Controle Extintor</span></a></li>
-          <li <?php if( $_SESSION['User']["inadmin"] == 0 ){ ?> hidden<?php } ?>><a href="<?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>/anualplan?pg=1<?php } ?>"><i class="fa fa-gears"></i> <span>Manutenção Preventiva</span></a></li>
-        </ul>
-      </li>
+      <li><a href="<?php if( $_SESSION['User']["inadmin"] != '' ){ ?>/cliente?pg=1<?php } ?>"><i class="fa fa-users"></i> <span>Controle Clientes</span></a></li>
     </ul>
     <!-- /.sidebar-menu -->
   </section>

@@ -1,4 +1,4 @@
-<!-- Content Wrapper. Contains page content -->
+<?php if(!class_exists('Rain\Tpl')){exit;}?><!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -19,8 +19,8 @@
 
   <div class="row">
   	<div class="col-md-12">
-      <div id="{if="$msg.state == 'SUCCESS' "}msg-success{/if}" class="box box-success" {if="$msg.state != 'SUCCESS' "}readonly hidden{/if}>
-        <div class="msg"><input type="text" class="form-control {if="$msg.state == 'SUCCESS' "}alert-success{else}alert-danger{/if}" name="msg" id="msg" value="{if="$msg.state == 'SUCCESS' "}{$msg.msg}{/if}" ></div>
+      <div id="<?php if( $msg["state"] == 'SUCCESS'  ){ ?>msg-success<?php } ?>" class="box box-success" <?php if( $msg["state"] != 'SUCCESS'  ){ ?>readonly hidden<?php } ?>>
+        <div class="msg"><input type="text" class="form-control <?php if( $msg["state"] == 'SUCCESS'  ){ ?>alert-success<?php }else{ ?>alert-danger<?php } ?>" name="msg" id="msg" value="<?php if( $msg["state"] == 'SUCCESS'  ){ ?><?php echo htmlspecialchars( $msg["msg"], ENT_COMPAT, 'UTF-8', FALSE ); ?><?php } ?>" ></div>
       </div>
   		<div class="box box-success">
         <!-- form start -->
@@ -43,11 +43,11 @@
               <div class="form-group">
                 <label for="classificacao_id">Classificação</label><strong class="obrigatorio"> *</strong>
                 <select class="form-control" name="classificacao_id" id="classificacao_id" required>
-                  {loop="$classificacoes"}
-                  {if="$value.classificacao_id == 3"}
-                  <option value="{$value.classificacao_id}">{$value.descricao}</option>
-                  {/if}
-                  {/loop}
+                  <?php $counter1=-1;  if( isset($classificacoes) && ( is_array($classificacoes) || $classificacoes instanceof Traversable ) && sizeof($classificacoes) ) foreach( $classificacoes as $key1 => $value1 ){ $counter1++; ?>
+                  <?php if( $value1["classificacao_id"] == 3 ){ ?>
+                  <option value="<?php echo htmlspecialchars( $value1["classificacao_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["descricao"], ENT_COMPAT, 'UTF-8', FALSE ); ?></option>
+                  <?php } ?>
+                  <?php } ?>
                 </select>
               </div>
             </div>

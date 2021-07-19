@@ -62,7 +62,7 @@
 	$app->get('/cliente/create', function() 
 	{
 		User::verifyLogin();
-		$classification = cliente::listClassification();
+		$classificacoes = cliente::listClassification();
 		
 		$msg = ["state"=>'VAZIO', "msg"=> 'VAZIO'];
 				
@@ -87,7 +87,7 @@
 			"j"	=>$j,
 			"date"	=>$dt,
 			"hour"	=>$dt1,
-			"classifications" =>$classification,
+			"classificacoes" =>$classificacoes,
 			"msg" =>$msg,
 		));
 	});
@@ -98,32 +98,12 @@
 		
 		$cliente = new cliente();
 
-		$ppost = Metodo::convertDateToDataBase(["daydate"=>$_POST["daydate"]]);
-
-		foreach ($ppost as $key => $value) {
-			$_POST[$key] = $value;
-		}
-		$_POST["user_id"] = $_SESSION["User"]["user_id"];
+		$_POST["usuario_id"] = $_SESSION["User"]["usuario_id"];
 		
-		if (isset($_FILES['image']) && $_FILES['image'] != '') {
-			$photo = $_FILES['image']['tmp_name'];
-			$tamanho = $_FILES['image']['size'];
-			$tipo = $_FILES['image']['type'];
-			$nome = $_FILES['image']['name'];
-
-			$fp = fopen($photo, "rb");
-			$conteudo = fread($fp, $tamanho);
-			$_POST["photo"] = base64_encode($conteudo);
-
-			fclose($fp);
-		
-		} else {
-			$_POST["photo"] = '';
-		}
 		$cliente->setData($_POST);
 		
 		$msg = $cliente->save();
-				
+		var_dump($msg);exit;		
 		header("Location: /cliente/create?msg=".$msg);
 		exit;
 	});
@@ -156,10 +136,10 @@
 		
 		if ($cliente->getphoto()) {
 			$photo = $cliente->getphoto();
-			$person_id = $cliente->getperson_id();
+			$pessoa_id = $cliente->getpessoa_id();
 			
 			$bs64_code = 'data:image/jpg;base64,'.$photo;
-			converter_base64_para_imagem($bs64_code, $dir, $person_id);
+			converter_base64_para_imagem($bs64_code, $dir, $pessoa_id);
 		}
 		
 		for ($i=0; $i < 200 ; $i++) 
@@ -177,12 +157,12 @@
 		
 	});
 
-	$app->post("/cliente/:person_id", function ($person_id)
+	$app->post("/cliente/:pessoa_id", function ($pessoa_id)
 	{
 		User::verifyLogin();
 			
 		$cliente = new cliente();
-		$cliente->getById($person_id);
+		$cliente->getById($pessoa_id);
 		if (isset($_POST)) {
 			$ppost = Metodo::convertDateToDataBase(["daydate"=>$_POST["daydate"], "dt_save"=>$_POST["dt_save"]]);
 			foreach ($ppost as $key => $value) {
@@ -425,7 +405,7 @@
 
 		$_POST["situation"] = '0';
 		$_POST["photo"] = '';
-		$_POST["classification_id"] = '4';
+		$_POST["classificacao_id"] = '4';
 	
 		$_POST['pass'] = password_hash($_POST["pass"], PASSWORD_DEFAULT, [
 			"cost"=>12
@@ -439,11 +419,11 @@
 			exit;
 	});
 
-	$app->get("/users/:person_id/delete", function ($person_id){
+	$app->get("/users/:pessoa_id/delete", function ($pessoa_id){
 		User::verifyLogin();
 		if ($_SESSION["User"]["inadmin"] == '1') {
 			$user = new User();
-			$user->get((int)$person_id);
+			$user->get((int)$pessoa_id);
 
 			$msg = $user->delete();
 			header("Location: /users?msg=$msg");
@@ -454,11 +434,11 @@
 		}
 	});
 
-	$app->get("/users/:person_id", function($person_id) {
+	$app->get("/users/:pessoa_id", function($pessoa_id) {
 		User::verifyLogin();
 		$user = new User();
  
-		$user->get((int)$person_id);
+		$user->get((int)$pessoa_id);
 			
 		$page = new PageUser();
 		
@@ -467,14 +447,14 @@
 		));
 	});
 	
-	$app->post("/users/:person_id", function ($person_id){
+	$app->post("/users/:pessoa_id", function ($pessoa_id){
 		User::verifyLogin();
 		$user = new User();
 		$_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
-		$_POST['pass'] = password_hash($_POST["pass"], PASSWORD_DEFAULT, [
+		$_POST['senha'] = password_hash($_POST["senha"], PASSWORD_DEFAULT, [
 			"cost"=>12
 			]);
-		$user->get((int)$person_id);
+		$user->get((int)$pessoa_id);
 		$user->setData($_POST);
 		$msg = $user->update();
 		

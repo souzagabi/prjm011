@@ -15,6 +15,12 @@
                             WHERE PRJM005.classificacao_id > 0 ORDER BY PRJM002.pessoa_id");
         }
 
+        public static function listClassification()
+        {
+            $sql = new Sql();
+            return $sql->select("CALL prc_classificacao_sel()");
+        }
+
         public function get($pessoa_id) 
         {
             $sql = new Sql();
@@ -28,6 +34,19 @@
             $this->setData($data);
         }
 
+        public function save()
+        {
+            $sql = new Sql();
+                                                     
+            $results = $sql->select("CALL prc_cliente_save(:usuario_id, :nome, :nrocelular, :classificacao_id)", array(
+                ":usuario_id"           => $this->getusuario_id(),   
+                ":nome"                 => $this->getnome(),   
+                ":nrocelular"           => $this->getnrocelular(),   
+                ":classificacao_id"     => $this->getclassificacao_id()
+            ));
+           
+            $this->setData($results);
+        }
         public function update()
         {
             $sql = new Sql();

@@ -143,6 +143,7 @@ function removeMensagem(){
         }, 2000);
     }
 }
+
 document.onreadystatechange = () => {
     if (document.readyState === 'complete') {
         removeMensagem(); 

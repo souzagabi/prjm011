@@ -80,7 +80,11 @@
         {
             $sql = new Sql();
             
-            $results = $sql->select("SELECT * FROM PRJM011001 PRJM001 INNER JOIN PRJM011004 PRJM004 USING(pessoa_id) INNER JOIN PRJM011002 PRJM002 USING(pessoa_id) WHERE PRJM001.pessoa_id = :pessoa_id", array(
+            $results = $sql->select("SELECT * FROM PRJM011001 PRJM001 
+                                    INNER JOIN PRJM011004 PRJM004 ON PRJM004.pessoa_id = PRJM001.pessoa_id 
+                                    INNER JOIN PRJM011002 PRJM002 ON PRJM002.pessoa_id = PRJM001.pessoa_id 
+                                    INNER JOIN PRJM011003 PRJM003 ON PRJM003.pessoa_id = PRJM001.pessoa_id
+                                    WHERE PRJM001.pessoa_id = :pessoa_id", array(
             ":pessoa_id"=>$pessoa_id
             ));
             
@@ -94,12 +98,12 @@
         {
             $sql = new Sql();
            
-            $results = $sql->select("CALL prc_pessoa_save(:nome,:nrocelular,:email,:classification_id,:situation, :login, :senha, :inadmin)", array(
+            $results = $sql->select("CALL prc_pessoa_save(:nome,:nrocelular,:email,:classificacao_id,:situacao, :login, :senha, :inadmin)", array(
                 ":nome"                 => $this->getnome(),
                 ":nrocelular"           => $this->getnrocelular(),
                 ":email"                => $this->getemail(),
-                ":classification_id"    => $this->getclassification_id(),
-                ":situation"            => $this->getsituation(),
+                ":classificacao_id"    => $this->getclassificacao_id(),
+                ":situacao"            => $this->getsituacao(),
                 ":login"                => $this->getlogin(),
                 ":senha"                => $this->getsenha(),
                 ":inadmin"              => $this->getinadmin()
@@ -111,14 +115,10 @@
         public function update()
         {
             $sql = new Sql();
-       
-            $results = $sql->select("CALL prc_pessoa_save(:pessoa_id,:nome,:nrocelular,:email,:classification_id,:situation, :login, :senha, :inadmin)", array(
+            
+            $results = $sql->select("CALL prc_user_update(:celular_id,:pessoa_id,:login, :senha, :inadmin)", array(
+                ":celular_id"           => $this->getcelular_id(),
                 ":pessoa_id"            => $this->getpessoa_id(),
-                ":nome"                 => $this->getnome(),
-                ":nrocelular"           => $this->getnrocelular(),
-                ":email"                => $this->getemail(),
-                ":classification_id"    => $this->getclassification_id(),
-                ":situation"            => $this->getsituation(),
                 ":login"                => $this->getlogin(),
                 ":senha"                => $this->getsenha(),
                 ":inadmin"              => $this->getinadmin()
