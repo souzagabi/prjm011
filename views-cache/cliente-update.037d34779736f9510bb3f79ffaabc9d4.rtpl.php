@@ -1,4 +1,4 @@
-<!-- Content Wrapper. Contains page content -->
+<?php if(!class_exists('Rain\Tpl')){exit;}?><!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -22,30 +22,30 @@
   		<div class="box box-success">
         <!-- form start -->
         
-        <form role="form" action="/cliente/{$cliente.pessoa_id}" method="post" enctype="multipart/form-data">
+        <form role="form" action="/cliente/<?php echo htmlspecialchars( $cliente["pessoa_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" method="post" enctype="multipart/form-data">
           <div class="box-body">
             <div class="col col-md-4">
               <div class="form-group">
                 <label for="nome">Nome</label><strong class="obrigatorio"> *</strong>
-                <input type="text" class="form-control" name="nome" id="nome" onkeyup="convertLowToUpper(nome)" value="{$cliente.nome}" autofocus="autofocus" required>
+                <input type="text" class="form-control" name="nome" id="nome" onkeyup="convertLowToUpper(nome)" value="<?php echo htmlspecialchars( $cliente["nome"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" autofocus="autofocus" required>
               </div>
               
             </div>
             <div class="col col-md-2">
               <div class="form-group">
                 <label for="nrocelular">Telefone</label>
-                <input type="text" class="form-control" name="nrocelular" id="nrocelular" value="{$cliente.nrocelular}" required>
+                <input type="text" class="form-control" name="nrocelular" id="nrocelular" value="<?php echo htmlspecialchars( $cliente["nrocelular"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" required>
               </div>
             </div>
             <div class="col col-md-2">
               <div class="form-group">
                 <label for="classificacao_id">Classificação</label><strong class="obrigatorio"> *</strong>
                 <select class="form-control" name="classificacao_id" id="classificacao_id" required>
-                  {loop="$classificacoes"}
-                  {if="$value.classificacao_id == 3"}
-                  <option value="{$value.classificacao_id}">{$value.descricao}</option>
-                  {/if}
-                  {/loop}
+                  <?php $counter1=-1;  if( isset($classificacoes) && ( is_array($classificacoes) || $classificacoes instanceof Traversable ) && sizeof($classificacoes) ) foreach( $classificacoes as $key1 => $value1 ){ $counter1++; ?>
+                  <?php if( $value1["classificacao_id"] == 3 ){ ?>
+                  <option value="<?php echo htmlspecialchars( $value1["classificacao_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["descricao"], ENT_COMPAT, 'UTF-8', FALSE ); ?></option>
+                  <?php } ?>
+                  <?php } ?>
                 </select>
               </div>
             </div>
@@ -53,8 +53,8 @@
               <div class="form-group">
                 <label for="situacao">Situação</label>
                 <select class="form-control" name="situacao" id="situacao">
-                  <option value="0"{if="$cliente.situacao == 0"}selected{/if}>ATIVO</option>
-                  <option value="1"{if="$cliente.situacao == 1"}selected{/if}>INATIVO</option>
+                  <option value="0"<?php if( $cliente["situacao"] == 0 ){ ?>selected<?php } ?>>ATIVO</option>
+                  <option value="1"<?php if( $cliente["situacao"] == 1 ){ ?>selected<?php } ?>>INATIVO</option>
                 </select>
               </div>
             </div>

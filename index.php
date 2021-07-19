@@ -33,6 +33,7 @@
 		
 		$company["nome"]	= NULL;
 		$company["cliente"]	= NULL;
+		$company["search"]	= NULL;
 		
 		$msg = ["state"=>'VAZIO', "msg"=> 'VAZIO'];		
 		
@@ -41,22 +42,38 @@
 			$msg = ["state"=>$mess[0], "msg"=> $mess[1]];
 			$_GET["msg"] = '';
 		} 
-
 		
 		foreach ($_GET as $key => $value) {
 			$company[$key] = $value;
 		}
-		$company["clientes"]	= "clientes";
+		
+		if (isset($_GET["search"])) {
+			$company["search"] 		= "search";
+			
+			// $clientes = Metodo::selectRegister($company);
+			
+			// if (isset($clientes) && $clientes != '') {
+			// 	$page->setTpl("cliente", array(
+			// 		"clientes"=>$clientes[0],
+			// 		"pgs"=>$clientes[1],
+			// 		"msg"=>$msg
+			// 	));
+			// }
 
-		$clientes = Metodo::selectRegister($company, "Cliente");
-
-		$pgs = 0;
+		} else // Fim do Search
+		{
+			$company["cliente"]	= "cliente";
+		}
+		//var_dump($company);exit;
+		$clientes = Metodo::selectRegister($company);
 		$page = new PageCliente();
+		
 		$page->setTpl("cliente", array(
 			"clientes"=>$clientes[0],
 			"pgs"=>$clientes[1],
 			"msg"=>$msg
 		));
+
 	});
 
 	$app->get('/cliente/create', function() 
@@ -72,21 +89,9 @@
 			$_GET["msg"] = '';
 		} 
 		
-		for ($i=0; $i < 200 ; $i++) 
-		{ 
-			$j[$i] = $i;
-		}
-		$date = explode(" ",date('d-m-Y H:i:s'));
-		$dt["date"] = $date[0];
-		$dt1["hour"] =$date[1];
-
-
-		$page = new Pagecliente();
+		$page = new PageCliente();
 
 		$page->setTpl("cliente-create", array(
-			"j"	=>$j,
-			"date"	=>$dt,
-			"hour"	=>$dt1,
 			"classificacoes" =>$classificacoes,
 			"msg" =>$msg,
 		));
@@ -96,25 +101,25 @@
 	{
 		User::verifyLogin();
 		
-		$cliente = new cliente();
+		$cliente = new Cliente();
 
 		$_POST["usuario_id"] = $_SESSION["User"]["usuario_id"];
 		
 		$cliente->setData($_POST);
 		
 		$msg = $cliente->save();
-		var_dump($msg);exit;		
+				
 		header("Location: /cliente/create?msg=".$msg);
 		exit;
 	});
 
 	$app->get("/cliente/:cliente_id/delete", function ($cliente_id){
 		User::verifyLogin();
-		$cliente = new cliente();
+		$cliente = new Cliente();
 		$cliente->getById($cliente_id);
 		
-		$user_id["user_id"] = $_SESSION["User"]["user_id"];
-		$cliente->setdata($user_id);
+		$usuario_id["usuario_id"] = $_SESSION["User"]["usuario_id"];
+		$cliente->setdata($usuario_id);
 		
 		$msg = $cliente->delete();
 		
@@ -124,35 +129,18 @@
 
 	$app->get('/cliente/:cliente_id', function($cliente_id) 
 	{
-		$dir = 'image';
-		$classifications = cliente::listClassification();
-		
-		$cliente = new cliente();
-		$cliente->getById($cliente_id);
-		
 		User::verifyLogin();
-		if(!is_dir($dir))
-			mkdir($dir, 777);
+		$classificacoes = Cliente::listClassification();
 		
-		if ($cliente->getphoto()) {
-			$photo = $cliente->getphoto();
-			$pessoa_id = $cliente->getpessoa_id();
-			
-			$bs64_code = 'data:image/jpg;base64,'.$photo;
-			converter_base64_para_imagem($bs64_code, $dir, $pessoa_id);
-		}
+		$cliente = new Cliente();
+		$cliente->get($cliente_id);
 		
-		for ($i=0; $i < 200 ; $i++) 
-		{ 
-			$j[$i] = $i;
-		}
-
-		$page = new Pagecliente();
+		
+		$page = new PageCliente();
 		
 		$page ->setTpl("cliente-update", array(
 			"cliente"		=>$cliente->getValues(),
-			"j"				=>$j,
-			"classifications"=>$classifications
+			"classificacoes"=>$classificacoes
 		));
 		
 	});
@@ -161,27 +149,9 @@
 	{
 		User::verifyLogin();
 			
-		$cliente = new cliente();
-		$cliente->getById($pessoa_id);
-		if (isset($_POST)) {
-			$ppost = Metodo::convertDateToDataBase(["daydate"=>$_POST["daydate"], "dt_save"=>$_POST["dt_save"]]);
-			foreach ($ppost as $key => $value) {
-				$_POST[$key] = $value;
-			}
-			$_POST["user_id"] = $_SESSION["User"]["user_id"];
-		}
-		if (isset($_FILES['image']) && $_FILES['image'] != '') {
-			$photo = $_FILES['image']['tmp_name'];
-			$tamanho = $_FILES['image']['size'];
-			$tipo = $_FILES['image']['type'];
-			$nome = $_FILES['image']['name'];
+		$cliente = new Cliente();
+		$cliente->get($pessoa_id);
 
-			$fp = fopen($photo, "rb");
-			$conteudo = fread($fp, $tamanho);
-			$_POST["photo"] = base64_encode($conteudo);
-
-			fclose($fp);
-		}
 		$cliente->setData($_POST);
 		
 		$msg = $cliente->update();
@@ -467,4 +437,3 @@
 
 ?>
 	
-

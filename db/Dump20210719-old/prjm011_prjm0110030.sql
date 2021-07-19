@@ -18,28 +18,31 @@ USE `prjm011`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `prjm011005`
+-- Table structure for table `prjm011003`
 --
 
-DROP TABLE IF EXISTS `prjm011005`;
+DROP TABLE IF EXISTS `prjm011003`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `prjm011005` (
-  `classificacao_id` int NOT NULL AUTO_INCREMENT,
-  `descricao` varchar(50) NOT NULL,
+CREATE TABLE `prjm011003` (
+  `celular_id` int NOT NULL AUTO_INCREMENT,
+  `pessoa_id` int NOT NULL,
+  `nrocelular` varchar(11) NOT NULL,
   `dtregistro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`classificacao_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`celular_id`),
+  KEY `FK_PRJM011003_PRJM011002_idx` (`pessoa_id`),
+  CONSTRAINT `fk_PRJM011003_PRJM011002` FOREIGN KEY (`pessoa_id`) REFERENCES `prjm011002` (`pessoa_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `prjm011005`
+-- Dumping data for table `prjm011003`
 --
 
-LOCK TABLES `prjm011005` WRITE;
-/*!40000 ALTER TABLE `prjm011005` DISABLE KEYS */;
-INSERT INTO `prjm011005` VALUES (1,'ADMINISTRADOR','2021-07-16 08:03:04'),(2,'COLABORADOR','2021-07-16 08:03:19'),(3,'CLIENTE','2021-07-16 08:03:23');
-/*!40000 ALTER TABLE `prjm011005` ENABLE KEYS */;
+LOCK TABLES `prjm011003` WRITE;
+/*!40000 ALTER TABLE `prjm011003` DISABLE KEYS */;
+INSERT INTO `prjm011003` VALUES (1,1,'14997506620','2021-07-16 08:09:05');
+/*!40000 ALTER TABLE `prjm011003` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-19 17:48:47
+-- Dump completed on 2021-07-19 17:48:21

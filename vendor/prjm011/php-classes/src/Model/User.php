@@ -98,12 +98,13 @@
         {
             $sql = new Sql();
            
-            $results = $sql->select("CALL prc_pessoa_save(:nome,:nrocelular,:email,:classificacao_id,:situacao, :login, :senha, :inadmin)", array(
+            $results = $sql->select("CALL prc_pessoa_save(:usuario_id,:nome,:nrocelular,:email,:classificacao_id,:situacao, :login, :senha, :inadmin)", array(
+                ":usuario_id"           => $this->getusuario_id(),
                 ":nome"                 => $this->getnome(),
                 ":nrocelular"           => $this->getnrocelular(),
                 ":email"                => $this->getemail(),
-                ":classificacao_id"    => $this->getclassificacao_id(),
-                ":situacao"            => $this->getsituacao(),
+                ":classificacao_id"     => $this->getclassificacao_id(),
+                ":situacao"             => $this->getsituacao(),
                 ":login"                => $this->getlogin(),
                 ":senha"                => $this->getsenha(),
                 ":inadmin"              => $this->getinadmin()
@@ -115,9 +116,9 @@
         public function update()
         {
             $sql = new Sql();
-            
-            $results = $sql->select("CALL prc_user_update(:celular_id,:pessoa_id,:login, :senha, :inadmin)", array(
-                ":celular_id"           => $this->getcelular_id(),
+
+            $results = $sql->select("CALL prc_user_update(:usuario_id,:pessoa_id,:login, :senha, :inadmin)", array(
+                ":usuario_id"           => $this->getusuario_id(),
                 ":pessoa_id"            => $this->getpessoa_id(),
                 ":login"                => $this->getlogin(),
                 ":senha"                => $this->getsenha(),

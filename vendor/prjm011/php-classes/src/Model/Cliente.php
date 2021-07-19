@@ -5,14 +5,12 @@
     use \PRJM011\Mailer;
     
     class Cliente extends Model {
-        public static function listAll()
+        public static function listAll($act = array())
         {
             $sql = new Sql();
-            return $sql->select("SELECT * FROM PRJM011002 PRJM002 
-                                INNER JOIN PRJM011004 PRJM004 ON PRJM004.pessoa_id = PRJM002.pessoa_id 
-                                INNER JOIN PRJM011003 PRJM003 ON PRJM003.pessoa_id = PRJM002.pessoa_id
-                                INNER JOIN PRJM011005 PRJM005 ON PRJM005.classificacao_id = PRJM002.classificacao_id
-                            WHERE PRJM005.classificacao_id > 0 ORDER BY PRJM002.pessoa_id");
+            return $sql->select("CALL prc_cliente_lista(:nrocelular)", array(
+                ":nrocelular"=>$act["nrocelular"]
+            ));
         }
 
         public static function listClassification()
@@ -25,8 +23,8 @@
         {
             $sql = new Sql();
             
-            $results = $sql->select("SELECT * FROM PRJM011002 WHERE pessoa_id = :pessoa_id", array(
-            ":pessoa_id"=>$pessoa_id
+            $results = $sql->select("CALL prc_cliente_selectById(:pessoa_id)", array(
+                ":pessoa_id"=>$pessoa_id
             ));
             
             $data = $results[0];
@@ -37,7 +35,11 @@
         public function save()
         {
             $sql = new Sql();
-                                                     
+            // echo '<pre>';                                         
+            // print_r($this);
+            // echo '</pre>';
+            //exit;
+            
             $results = $sql->select("CALL prc_cliente_save(:usuario_id, :nome, :nrocelular, :classificacao_id)", array(
                 ":usuario_id"           => $this->getusuario_id(),   
                 ":nome"                 => $this->getnome(),   
@@ -46,27 +48,32 @@
             ));
            
             $this->setData($results);
+            
+            return $results[0]["MESSAGE"];
         }
+        
         public function update()
         {
             $sql = new Sql();
-                                                     
-            $results = $sql->select("CALL sp_persons_update_save(:pessoa_id, :desperson, :sgcompany, :descpfcnpj, :email)", array(
-                ":pessoa_id"         => $this->getpessoa_id(),
-                ":desperson"        => $this->getdesperson(),   
-                ":sgcompany"        => $this->getsgcompany(),   
-                ":descpfcnpj"       => $this->getdescpfcnpj(),
-                ":email"            => $this->getemail()
+                       
+            $results = $sql->select("CALL prc_cliente_update(:usuario_id,:pessoa_id,:celular_id, :nome, :nrocelular,:classificacao_id)", array(
+                ":usuario_id"           => $this->getusuario_id(),   
+                ":pessoa_id"            => $this->getpessoa_id(),
+                ":celular_id"           => $this->getcelular_id(),
+                ":nome"                 => $this->getnome(),   
+                ":nrocelular"           => $this->getnrocelular(),   
+                ":classificacao_id"     => $this->getclassificacao_id()
             ));
            
             $this->setData($results);
+            return $results[0]["MESSAGE"];
         }
 
         public function delete()
         {
             $sql = new Sql();
             
-            $sql->query("CALL sp_persons_delete(:pessoa_id)", array(
+            $sql->query("CALL prc_cliente_delete(:pessoa_id)", array(
                 ":pessoa_id"=>$this->getpessoa_id()
             ));
         }

@@ -10,9 +10,9 @@
         {
             $i = 0;
             
-            if ((isset($object["daydate"]) && $object["daydate"] != '') || (isset($object["dateout"]) && $object["dateout"] != '')  || (isset($object["datein"]) && $object["datein"] != '') || (isset($object["dtprevision"]) && $object["dtprevision"] != '')) {
+            if ((isset($object["dtcadastro"]) && $object["dtcadastro"] != '') ) {
                 foreach ($object as $key => $value) {
-                    if ($value != '' && ($key == "daydate" || $key == "dt_save" || $key == "rechargedate" || $key == "nextmanager") || $key == "dateout"  || $key == "datein" || $key == "dtprevision") {
+                    if ($value != '' && $key == "dtcadastro") {
                         $object[$key] =  Metodo::convertDateView($value);
                     }
                     $i++;
@@ -22,7 +22,7 @@
                 if (isset($object)) {
                     foreach ($object as $key => $values) {
                         foreach ($values as $key => $value) {
-                            if ($value != '' && ($key == "daydate" || $key == "dt_save" || $key == "rechargedate" || $key == "nextmanager" || $key == "dateout"  || $key == "datein" || $key == "dtprevision")) {
+                            if ($value != '' && $key == "dtcadastro") {
                                 $values[$key] =  Metodo::convertDateView($value);
                             }
                         }
@@ -87,13 +87,11 @@
             return $pgs;
         }
 
-        public function selectRegister($act = array(), $model)
+        public function selectRegister($act = array())
         {
             $classModel = "";
             $pgs        = [];
-            if ($model == "Cliente") {
-                $classModel = Cliente::listAll($act);
-            }
+            $classModel = Cliente::listAll($act);
             
             $classModel = Metodo::convertDateToView($classModel);
             $classModel = Metodo::convertToInt($classModel);
