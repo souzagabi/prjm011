@@ -115,7 +115,7 @@
         {
             $sql = new Sql();
             
-            $results = $sql->select("CALL prc_user_update(:usuario_id,:pessoa_id,:nome,:nrocelular,:email,:classificacao_id,:login,:senha,:inadmin,:situacao)", array(
+            $results = $sql->select("CALL prc_pessoa_update(:usuario_id,:pessoa_id,:nome,:nrocelular,:email,:classificacao_id,:login,:senha,:inadmin,:situacao)", array(
                 ":usuario_id"           => $this->getusuario_id(),
                 ":pessoa_id"            => $this->getpessoa_id(),
                 ":nome"                 => $this->getnome(),
