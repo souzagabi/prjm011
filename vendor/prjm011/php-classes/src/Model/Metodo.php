@@ -92,7 +92,12 @@
             $classModel = "";
             $pgs        = [];
             
-            $classModel = Cliente::listAll($act);
+            if (isset($act["cliente"]) && $act["cliente"] == "cliente") {
+                $classModel = Cliente::listAll($act);
+            }
+            if (isset($act["usuario"]) && $act["usuario"] == "usuario") {
+                $classModel = User::listAll();
+            }
             
             $classModel = Metodo::convertDateToView($classModel);
             $classModel = Metodo::convertToInt($classModel);

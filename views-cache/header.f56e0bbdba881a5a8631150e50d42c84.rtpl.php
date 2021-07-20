@@ -187,7 +187,7 @@ desired effect
               <!-- The user image in the menu -->
               
               <li class="user-header">
-                <img class="user-image" src="../image/admin.jpg">
+                <img class="img-circle" src="../image/admin.jpg">
                 <p>
                   <?php echo htmlspecialchars( $_SESSION['User']["nome"], ENT_COMPAT, 'UTF-8', FALSE ); ?>
                 </p>
@@ -219,7 +219,7 @@ desired effect
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel">
       <div class="pull-left image">
-        <img class="user-image" src="../image/admin.jpg">
+        <img class="img-circle" src="../image/admin.jpg">
       </div>
       <div class="pull-left info">
         <p><?php echo htmlspecialchars( $_SESSION['User']["nome"], ENT_COMPAT, 'UTF-8', FALSE ); ?></p>

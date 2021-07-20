@@ -66,14 +66,13 @@
 
         public static function listAll()
         {
-            $sql = new Sql();
-            return $sql->select("SELECT PRJM002.pessoa_id, PRJM002.nome, PRJM002.classificacao_id,
-                                    PRJM003.celular_id, PRJM003.nrocelular,
-                                    PRJM004.usuario_id, PRJM004.login, PRJM004.senha, PRJM004.inadmin 
-                                    FROM PRJM011002 PRJM002 
-                                    INNER JOIN PRJM011003 PRJM003 ON PRJM003.pessoa_id = PRJM002.pessoa_id 
-                                    INNER JOIN PRJM011004 PRJM004 ON PRJM004.pessoa_id = PRJM002.pessoa_id 
-                                    ORDER BY PRJM002.nome");
+           $sql = new Sql();
+           $results = $sql->select("CALL prc_usuario_lista()");
+
+            if ($results == '' || $results == NULL) {
+                $results[0]["MESSAGE"] = "Não há registros a ser visualizado!!";
+            }
+            return $results;
         }
 
         public function get($pessoa_id) 
@@ -98,13 +97,12 @@
         {
             $sql = new Sql();
            
-            $results = $sql->select("CALL prc_pessoa_save(:usuario_id,:nome,:nrocelular,:email,:classificacao_id,:situacao, :login, :senha, :inadmin)", array(
+            $results = $sql->select("CALL prc_pessoa_save(:usuario_id,:nome,:nrocelular,:email,:classificacao_id,:login, :senha, :inadmin)", array(
                 ":usuario_id"           => $this->getusuario_id(),
                 ":nome"                 => $this->getnome(),
                 ":nrocelular"           => $this->getnrocelular(),
                 ":email"                => $this->getemail(),
                 ":classificacao_id"     => $this->getclassificacao_id(),
-                ":situacao"             => $this->getsituacao(),
                 ":login"                => $this->getlogin(),
                 ":senha"                => $this->getsenha(),
                 ":inadmin"              => $this->getinadmin()
@@ -116,13 +114,18 @@
         public function update()
         {
             $sql = new Sql();
-
-            $results = $sql->select("CALL prc_user_update(:usuario_id,:pessoa_id,:login, :senha, :inadmin)", array(
+            
+            $results = $sql->select("CALL prc_user_update(:usuario_id,:pessoa_id,:nome,:nrocelular,:email,:classificacao_id,:login,:senha,:inadmin,:situacao)", array(
                 ":usuario_id"           => $this->getusuario_id(),
                 ":pessoa_id"            => $this->getpessoa_id(),
+                ":nome"                 => $this->getnome(),
+                ":nrocelular"           => $this->getnrocelular(),
+                ":email"                => $this->getemail(),
+                ":classificacao_id"     => $this->getclassificacao_id(),
                 ":login"                => $this->getlogin(),
                 ":senha"                => $this->getsenha(),
-                ":inadmin"              => $this->getinadmin()
+                ":inadmin"              => $this->getinadmin(),
+                ":situacao"             => $this->getsituacao()
             ));
            
             $this->setData($results);
@@ -133,9 +136,8 @@
         public function delete()
         {
             $sql = new Sql();
-            $results = $sql->select("CALL prc_pessoa_delete(:pessoa_id,:usuario_id)", array(
-                ":pessoa_id"=>(int)$this->getpessoa_id(),
-                ":usuario_id"=>(int)$this->getusuario_id()
+            $results = $sql->select("CALL prc_pessoa_delete(:pessoa_id)", array(
+                ":pessoa_id"=>(int)$this->getpessoa_id()
             ));
            
             $this->setData($results);

@@ -78,9 +78,12 @@
         {
             $sql = new Sql();
             
-            $sql->query("CALL prc_cliente_delete(:pessoa_id)", array(
+            $results = $sql->select("CALL prc_pessoa_delete(:pessoa_id)", array(
                 ":pessoa_id"=>$this->getpessoa_id()
             ));
+            
+            $this->setData($results);
+            return $results[0]["MESSAGE"];
         }
     }
 ?>

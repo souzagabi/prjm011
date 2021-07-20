@@ -44,11 +44,12 @@
           <?php if( $msg["state"] != 'SUCCESS' && $msg["state"] != 'ERROR' && $msg["state"] != 'ERROR' ){ ?>readonly hidden<?php } ?>>
       <div class="msg"><input type="text" class="form-control msg-<?php if( $msg["state"] == 'SUCCESS'  ){ ?>success alert-success<?php }else{ ?>danger alert-danger<?php } ?>" name="msg" value="<?php echo htmlspecialchars( $msg["msg"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" ></div>
     </div>
-    <div id="msg<?php if( $msg["state"] == 'WARNING' ){ ?>-warning<?php } ?>" 
-          class="box box-<?php if( $msg["state"] == 'WARNING' ){ ?>-warning<?php } ?>" 
-          <?php if( $msg["state"] != 'WARNING' ){ ?>readonly hidden<?php } ?>>
-      <div class="msg"><input type="text" class="form-control msg-<?php if( $msg["state"] == 'WARNING'  ){ ?>warning alert-warning<?php } ?>" name="msg" value="<?php echo htmlspecialchars( $msg["msg"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" ></div>
+    <div id="msg<?php if( $msgW["state"] == 'WARNING' ){ ?>-warning<?php } ?>" 
+          class="box box-<?php if( $msgW["state"] == 'WARNING' ){ ?>-warning<?php } ?>" 
+          <?php if( $msgW["state"] != 'WARNING' ){ ?>readonly hidden<?php } ?>>
+      <div class="msg"><input type="text" class="form-control msg-<?php if( $msgW["state"] == 'WARNING'  ){ ?>warning alert-warning<?php } ?>" name="msgW" value="<?php echo htmlspecialchars( $msgW["msg"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" ></div>
     </div>
+    <!--Paginação-->
     <div class="box box-primary" <?php if( !$pgs ){ ?>hidden<?php } ?>>
       <div class="row">
         <div class="col col-md-12">
@@ -74,6 +75,7 @@
         </div>
       </div>
     </div>
+    <!--Fim Paginação-->
     <div class="box box-primary" <?php if( !$clientes ){ ?>hidden<?php } ?>>
       <div class="box-body no-padding">
         <table class="table table-straped">
@@ -86,7 +88,7 @@
             </tr>
           </thead>
           <tbody>
-            <?php if( $msg["state"] != 'WARNING' ){ ?>
+            <?php if( $msgW["state"] != 'WARNING' ){ ?>
             <?php $counter1=-1;  if( isset($clientes) && ( is_array($clientes) || $clientes instanceof Traversable ) && sizeof($clientes) ) foreach( $clientes as $key1 => $value1 ){ $counter1++; ?>
             <tr>
               <th><?php echo htmlspecialchars( $value1["pessoa_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></th>
@@ -103,6 +105,7 @@
         </table>
       </div>
     </div>
+    <!--Paginação-->
     <div class="box box-primary" <?php if( !$pgs ){ ?>hidden<?php } ?>>
       <div class="row">
         <div class="col col-md-12">
@@ -127,5 +130,6 @@
         </div>
       </div>
     </div>
+    <!--Fim Paginação-->
   </section>
 </div>

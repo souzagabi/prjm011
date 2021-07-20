@@ -38,6 +38,7 @@
 		
 		
 		$msg = ["state"=>'VAZIO', "msg"=> 'VAZIO'];		
+		$msgW = ["state"=>'VAZIO', "msg"=> 'VAZIO'];		
 		
 		if ((isset($_GET["msg"]) && $_GET["msg"] != '')) {
 			$mess = explode(':', $_GET["msg"]);
@@ -52,15 +53,13 @@
 		if (isset($_GET["search"])) {
 			$company["search"] 		= "search";
 
-		} else // Fim do Search
-		{
-			$company["cliente"]	= "cliente";
-		}
+		} 
+		$company["cliente"]	= "cliente";
 		
 		$clientes = Metodo::selectRegister($company);
 		
 		if (isset($clientes[0][0]["MESSAGE"])) {
-			$msg = ["state"=>'WARNING', "msg"=> $clientes[0][0]["MESSAGE"]];
+			$msgW = ["state"=>'WARNING', "msg"=> $clientes[0][0]["MESSAGE"]];
 		}
 		
 		$page = new PageCliente();
@@ -68,7 +67,8 @@
 		$page->setTpl("cliente", array(
 			"clientes"=>$clientes[0],
 			"pgs"=>$clientes[1],
-			"msg"=>$msg
+			"msg"=>$msg,
+			"msgW"=>$msgW
 		));
 
 	});
@@ -76,7 +76,7 @@
 	$app->get('/cliente/create', function() 
 	{
 		User::verifyLogin();
-		$classificacoes = cliente::listClassification();
+		$classificacoes = Cliente::listClassification();
 		
 		$msg = ["state"=>'VAZIO', "msg"=> 'VAZIO'];
 				
@@ -113,7 +113,7 @@
 	$app->get("/cliente/:cliente_id/delete", function ($cliente_id){
 		User::verifyLogin();
 		$cliente = new Cliente();
-		$cliente->getById($cliente_id);
+		$cliente->get($cliente_id);
 		
 		$usuario_id["usuario_id"] = $_SESSION["User"]["usuario_id"];
 		$cliente->setdata($usuario_id);
@@ -164,21 +164,27 @@
 	$app->get('/admin', function() {
 
 		User::verifyLogin();
-		if ($_SESSION["User"]["inadmin"] == '1') {
-			$users = User::listAll();
 
-			$msg = ["state"=>'VAZIO', "msg"=> 'VAZIO'];		
+		$company["usuario"]		= NULL;
+
+		if ($_SESSION["User"]["inadmin"] == '1') {
+			
+			$msg= '';
 			
 			if ((isset($_GET["msg"]) && $_GET["msg"] != '')) {
 				$mess = explode(':', $_GET["msg"]);
 				$msg = ["state"=>$mess[0], "msg"=> $mess[1]];
-				$_GET["msg"] = '';
-			} 
+			} else {
+				$msg = ["state"=>'', "msg"=> ''];
+			}
+			$company["usuario"]		= 'usuario';
 
-			$page = new PageUser();
+			$users = Metodo::selectRegister($company);
 			
+			$page = new PageUser();
 			$page->setTpl("users", array(
-				"users"=> $users,
+				"users"=> $users[0],
+				"pgs"=> $users[1],
 				"msg"=>$msg
 			));
 		} else {
@@ -310,8 +316,10 @@
 	$app->get('/users', function() {
 		
 		User::verifyLogin();
+
+		$company["usuario"]		= NULL;
+
 		if ($_SESSION["User"]["inadmin"] == '1') {
-			$users = User::listAll();
 			
 			$msg= '';
 			
@@ -321,10 +329,17 @@
 			} else {
 				$msg = ["state"=>'', "msg"=> ''];
 			}
+			$company["usuario"]		= 'usuario';
 
+			$users = Metodo::selectRegister($company);
+			if (isset($users[0][0]["MESSAGE"])) {
+				$msg = ["state"=>'WARNING', "msg"=> $users[0][0]["MESSAGE"]];
+			}
+			
 			$page = new PageUser();
 			$page->setTpl("users", array(
-				"users"=> $users,
+				"users"=> $users[0],
+				"pgs"=> $users[1],
 				"msg"=>$msg
 			));
 		} else {
@@ -337,6 +352,9 @@
 		
 		User::verifyLogin();
 		if ($_SESSION["User"]["inadmin"] == '1') {
+			
+			$classificacoes = Cliente::listClassification();
+			
 			$msg = ["state"=>'VAZIO', "msg"=> 'VAZIO'];
 		
 			if ((isset($_GET["msg"]) && $_GET["msg"] != '')) {
@@ -345,7 +363,9 @@
 				$_GET["msg"] = '';
 			}
 			$page = new PageUser();
+
 			$page->setTpl("users-create", array(
+				"classificacoes"=>$classificacoes,
 				"msg"=>$msg
 			));
 		} else {
@@ -359,22 +379,10 @@
 
 		$user = new User();
 
-		$date = explode(" ",date('d-m-Y H:i'));
-		$dt["daydate"] = $date[0];
-		$dt1["hour"] =$date[1];
-		$ppost = Metodo::convertDateToDataBase(["daydate"=>$date[0]]);
-
-		foreach ($ppost as $key => $value) {
-			$_POST[$key] = $value;
-		}
-
 		$_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
+		$_POST["usuario_id"] = $_SESSION["User"]["usuario_id"]; 
 
-		$_POST["situation"] = '0';
-		$_POST["photo"] = '';
-		$_POST["classificacao_id"] = '4';
-	
-		$_POST['pass'] = password_hash($_POST["pass"], PASSWORD_DEFAULT, [
+		$_POST['senha'] = password_hash($_POST["senha"], PASSWORD_DEFAULT, [
 			"cost"=>12
 			]);
 
