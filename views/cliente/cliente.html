@@ -41,8 +41,13 @@
     </div>
     <div id="msg{if="$msg.state == 'SUCCESS'"}-success{else}-danger{/if}" 
           class="box box-{if="$msg.state == 'SUCCESS'"}-success{else}danger{/if}" 
-          {if="$msg.state != 'SUCCESS' && $msg.state != 'ERROR'"}readonly hidden{/if}>
+          {if="$msg.state != 'SUCCESS' && $msg.state != 'ERROR' && $msg.state != 'ERROR'"}readonly hidden{/if}>
       <div class="msg"><input type="text" class="form-control msg-{if="$msg.state == 'SUCCESS' "}success alert-success{else}danger alert-danger{/if}" name="msg" value="{$msg.msg}" ></div>
+    </div>
+    <div id="msg{if="$msg.state == 'WARNING'"}-warning{/if}" 
+          class="box box-{if="$msg.state == 'WARNING'"}-warning{/if}" 
+          {if="$msg.state != 'WARNING'"}readonly hidden{/if}>
+      <div class="msg"><input type="text" class="form-control msg-{if="$msg.state == 'WARNING' "}warning alert-warning{/if}" name="msg" value="{$msg.msg}" ></div>
     </div>
     <div class="box box-primary" {if="!$pgs"}hidden{/if}>
       <div class="row">
@@ -81,6 +86,7 @@
             </tr>
           </thead>
           <tbody>
+            {if="$msg.state != 'WARNING'"}
             {loop="$clientes"}
             <tr>
               <th>{$value.pessoa_id}</th>
@@ -92,6 +98,7 @@
               </td>
             </tr>
             {/loop}
+            {/if}
           </tbody>
         </table>
       </div>

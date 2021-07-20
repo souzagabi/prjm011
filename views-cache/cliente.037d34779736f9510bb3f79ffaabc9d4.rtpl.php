@@ -41,8 +41,13 @@
     </div>
     <div id="msg<?php if( $msg["state"] == 'SUCCESS' ){ ?>-success<?php }else{ ?>-danger<?php } ?>" 
           class="box box-<?php if( $msg["state"] == 'SUCCESS' ){ ?>-success<?php }else{ ?>danger<?php } ?>" 
-          <?php if( $msg["state"] != 'SUCCESS' && $msg["state"] != 'ERROR' ){ ?>readonly hidden<?php } ?>>
+          <?php if( $msg["state"] != 'SUCCESS' && $msg["state"] != 'ERROR' && $msg["state"] != 'ERROR' ){ ?>readonly hidden<?php } ?>>
       <div class="msg"><input type="text" class="form-control msg-<?php if( $msg["state"] == 'SUCCESS'  ){ ?>success alert-success<?php }else{ ?>danger alert-danger<?php } ?>" name="msg" value="<?php echo htmlspecialchars( $msg["msg"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" ></div>
+    </div>
+    <div id="msg<?php if( $msg["state"] == 'WARNING' ){ ?>-warning<?php } ?>" 
+          class="box box-<?php if( $msg["state"] == 'WARNING' ){ ?>-warning<?php } ?>" 
+          <?php if( $msg["state"] != 'WARNING' ){ ?>readonly hidden<?php } ?>>
+      <div class="msg"><input type="text" class="form-control msg-<?php if( $msg["state"] == 'WARNING'  ){ ?>warning alert-warning<?php } ?>" name="msg" value="<?php echo htmlspecialchars( $msg["msg"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" ></div>
     </div>
     <div class="box box-primary" <?php if( !$pgs ){ ?>hidden<?php } ?>>
       <div class="row">
@@ -81,6 +86,7 @@
             </tr>
           </thead>
           <tbody>
+            <?php if( $msg["state"] != 'WARNING' ){ ?>
             <?php $counter1=-1;  if( isset($clientes) && ( is_array($clientes) || $clientes instanceof Traversable ) && sizeof($clientes) ) foreach( $clientes as $key1 => $value1 ){ $counter1++; ?>
             <tr>
               <th><?php echo htmlspecialchars( $value1["pessoa_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></th>
@@ -91,6 +97,7 @@
                 <a href="/cliente/<?php echo htmlspecialchars( $value1["pessoa_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
               </td>
             </tr>
+            <?php } ?>
             <?php } ?>
           </tbody>
         </table>

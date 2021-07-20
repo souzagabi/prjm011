@@ -31,9 +31,9 @@
 		
 		User::verifyLogin();
 		
-		$company["nome"]	= NULL;
-		$company["cliente"]	= NULL;
-		$company["search"]	= NULL;
+		$company["nome"]		= NULL;
+		$company["cliente"]		= NULL;
+		$company["search"]		= NULL;
 		$company["nrocelular"]	= NULL;
 		
 		
@@ -58,6 +58,11 @@
 		}
 		
 		$clientes = Metodo::selectRegister($company);
+		
+		if (isset($clientes[0][0]["MESSAGE"])) {
+			$msg = ["state"=>'WARNING', "msg"=> $clientes[0][0]["MESSAGE"]];
+		}
+		
 		$page = new PageCliente();
 		
 		$page->setTpl("cliente", array(
