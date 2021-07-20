@@ -5,9 +5,10 @@
     use \PRJM011\Mailer;
     
     class Cliente extends Model {
-        public static function listAll($act = array())
+        public static function listAll($act)
         {
             $sql = new Sql();
+
             return $sql->select("CALL prc_cliente_lista(:nrocelular)", array(
                 ":nrocelular"=>$act["nrocelular"]
             ));

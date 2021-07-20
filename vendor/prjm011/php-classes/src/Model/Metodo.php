@@ -91,6 +91,7 @@
         {
             $classModel = "";
             $pgs        = [];
+            
             $classModel = Cliente::listAll($act);
             
             $classModel = Metodo::convertDateToView($classModel);

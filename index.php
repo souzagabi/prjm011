@@ -34,6 +34,8 @@
 		$company["nome"]	= NULL;
 		$company["cliente"]	= NULL;
 		$company["search"]	= NULL;
+		$company["nrocelular"]	= NULL;
+		
 		
 		$msg = ["state"=>'VAZIO', "msg"=> 'VAZIO'];		
 		
@@ -49,22 +51,12 @@
 		
 		if (isset($_GET["search"])) {
 			$company["search"] 		= "search";
-			
-			// $clientes = Metodo::selectRegister($company);
-			
-			// if (isset($clientes) && $clientes != '') {
-			// 	$page->setTpl("cliente", array(
-			// 		"clientes"=>$clientes[0],
-			// 		"pgs"=>$clientes[1],
-			// 		"msg"=>$msg
-			// 	));
-			// }
 
 		} else // Fim do Search
 		{
 			$company["cliente"]	= "cliente";
 		}
-		//var_dump($company);exit;
+		
 		$clientes = Metodo::selectRegister($company);
 		$page = new PageCliente();
 		
