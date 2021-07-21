@@ -15,6 +15,10 @@
 	use \PRJM011\Model\Cliente;
 	use \PRJM011\Model\Relatorio;
 	
+	use \Dompdf\Dompdf;
+
+	require_once("lib/dompdf/autoload.inc.php");
+	
 	date_default_timezone_set('America/Sao_Paulo');
 
 	$app = new Slim();
@@ -441,13 +445,45 @@
 /*									Rotas do Relatório									*/
 /*======================================================================================*/
 
-$app->get('/relatorio', function() {
+	$app->get('/relatorio', function() {
 		
-	User::verifyLogin();
+		User::verifyLogin();
+			
+		$pdf = new DOMPDF();
+		$company["nome"]		= NULL;
+		$company["nrocelular"]	= NULL;
+		$company["cliente"]	= "cliente";
+			
+		$clientes = Cliente::listAll($company);
 		
-	Relatorio::converterParaPDF();
+		$date = explode(" ",date('d-m-Y H:i:s'));
+		$html = "";
+		// echo '<pre>';
+		// print_r($clientes);
+		// echo '</pre>';
+		for ($i=0; $i < count($clientes) ; $i++) { 
+			$html .= "Nome: ".$clientes[$i]["nome"];
+			$html .= " Celular: ".$clientes[$i]["nrocelular"];
+			// foreach ($clientes[$i] as $key => $value) {
+			// 	 echo $key." = ".$value."<br>";
+			// }
+			$html .="<hr><br>";
+			
+		}
+		//Início da página
+		$pdf->load_html('
+			<h1 style="text-align: center;">Castratro de Clientes</h1>
+			'.$html.'
+		');
+		
+		$pdf->render();
 
-});
+		$pdf->stream(
+			"relatorio".$date[0]."_".$date[1].".pdf", array(
+				"Attachment"=> false
+		));
+
+	});
 /*======================================================================================*/
 /*									Execução do Sistema									*/
 /*======================================================================================*/

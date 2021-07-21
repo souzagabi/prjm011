@@ -17,9 +17,9 @@
           <div class="col col-md-4">
             <form action="/cliente/create" method="get">
               <input type="submit" name="cliente" class="btn btn-success" value="Cadastrar Cliente">
-              <!-- <?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>
+              <?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>
                 <a href="/relatorio" name="relatorio" class="btn btn-primary pull-right" target="_blank">Relatório Cliente</a>
-              <?php } ?> -->
+              <?php } ?>
               
             </form>
           </div>
