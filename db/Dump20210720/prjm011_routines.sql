@@ -71,7 +71,8 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_cliente_lista`(
-	par_nrocelular varchar(11)
+	par_nrocelular varchar(11),
+    par_nome varchar(256)
 )
 BEGIN
 	DECLARE MESSAGE varchar(1000);
@@ -84,20 +85,23 @@ BEGIN
 	SET @sql = concat('SELECT * FROM PRJM011002 PRJM002  ');
 	SET @sql = concat(@sql, '	INNER JOIN PRJM011001 PRJM001 ON PRJM001.pessoa_id = PRJM002.pessoa_id ');
 	SET @sql = concat(@sql, '	INNER JOIN PRJM011003 PRJM003 ON PRJM003.pessoa_id = PRJM002.pessoa_id ');
-	SET @sql = concat(@sql, '	INNER JOIN PRJM011004 PRJM004 ON PRJM004.pessoa_id = PRJM002.pessoa_id  ');
 	SET @sql = concat(@sql, '	INNER JOIN PRJM011005 PRJM005 ON PRJM005.classificacao_id = PRJM002.classificacao_id ');
-	SET @sql = concat(@sql, ' WHERE PRJM005.classificacao_id > 0  ');
+	SET @sql = concat(@sql, ' WHERE PRJM005.classificacao_id = 3  ');
 	SET @sql = concat(@sql, '	AND PRJM001.situacao = 0 ');
     
-    IF par_nrocelular IS NOT NULL THEN
-		SET @sql = concat(@sql, '	AND PRJM0003.nrocelular = ',par_nrocelular);
+    IF par_nrocelular IS NOT NULL AND par_nrocelular != '' THEN
+		SET @sql = concat(@sql, '	AND PRJM003.nrocelular = ',par_nrocelular);
+    END IF;
+    
+    IF par_nome IS NOT NULL AND par_nome != '' THEN
+		SET @sql = concat(@sql, '	AND PRJM002.nome LIKE "%',par_nome,'%"');
     END IF;
     
 	SET @sql = concat(@sql, ' ORDER BY PRJM002.pessoa_id; ');
         
 	PREPARE STMT FROM @sql;
     EXECUTE STMT;
-    SELECT @sql;
+    
 	IF EX = 1 THEN
 		SET MESSAGE = "ERROR: Erro ao filtrar Clientes!!" ;
         SELECT MESSAGE;
@@ -196,10 +200,13 @@ BEGIN
 	DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SELECT 'ERROR: Erro no código SQL.' AS MESSAGE;
     START TRANSACTION;
     
-    SELECT * FROM PRJM011002 PRJM002 
-		INNER JOIN PRJM011001 PRJM001 ON PRJM001.pessoa_id = PRJM002.pessoa_id 
-		INNER JOIN PRJM011003 PRJM003 ON PRJM003.pessoa_id = PRJM002.pessoa_id 
-	WHERE PRJM002.pessoa_id = par_pessoa_id;
+    SET @sql = concat('SELECT * FROM PRJM011002 PRJM002 ');
+	SET @sql = concat(@sql,'	INNER JOIN PRJM011001 PRJM001 ON PRJM001.pessoa_id = PRJM002.pessoa_id ');
+	SET @sql = concat(@sql,'	INNER JOIN PRJM011003 PRJM003 ON PRJM003.pessoa_id = PRJM002.pessoa_id ');
+	SET @sql = concat(@sql,' WHERE PRJM002.pessoa_id = ',par_pessoa_id,';');
+    
+    PREPARE STMT FROM @sql;
+    EXECUTE STMT;
     
     IF EX = 1 THEN
 		SET MESSAGE = "ERROR: Erro ao filtrar Cliente!!" ;
@@ -232,7 +239,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_cliente_update`(
 	par_celular_id int(11),
 	par_nome varchar(256),
 	par_nrocelular varchar(11),
-	par_classificacao_id int(11)
+	par_classificacao_id int(11),
+    par_situacao char(1)
 )
 BEGIN
 	DECLARE MESSAGE varchar(1000);
@@ -242,6 +250,11 @@ BEGIN
 	DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SELECT 'ERROR: Erro no código SQL.' AS MESSAGE;
     START TRANSACTION;
 	
+    UPDATE PRJM011001
+	SET
+		situacao 			= par_situacao
+	WHERE pessoa_id = par_pessoa_id;
+    
     UPDATE PRJM011002
 	SET
 		usuario_id 			= par_usuario_id,
@@ -274,6 +287,48 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `prc_pessoa_delete` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_pessoa_delete`(
+	par_pessoa_id int(11)
+)
+BEGIN
+	DECLARE MESSAGE VARCHAR(100);
+	DECLARE EX SMALLINT DEFAULT 0;
+	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET EX = 1;
+    DECLARE EXIT HANDLER FOR 1062 SELECT  "ERRO de duplicidade do ID."  MESSAGE;
+	DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SELECT 'Erro no código SQL.' MESSAGE;
+    START TRANSACTION;
+    
+	DELETE FROM PRJM011001
+    WHERE pessoa_id = par_pessoa_id;
+
+	IF EX = 1 THEN
+		SET MESSAGE = "ERROR: Erro ao excluir registro na tabela PRJM011001." ;
+	END IF;
+    
+    IF EX = 1 THEN
+		SELECT MESSAGE;
+		ROLLBACK;
+	ELSE
+		SET MESSAGE = "SUCCESS: Registros excluído com sucesso!";
+        SELECT MESSAGE;
+        COMMIT;
+	END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `prc_pessoa_save` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -285,19 +340,17 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_pessoa_save`(
-	par_usuario INT(11),
+	par_usuario_id INT(11),
 	par_nome varchar(256),
 	par_nrocelular varchar(11),
 	par_email varchar(64),
 	par_classificacao_id int(11),
-	par_situacao char(1),
 	par_login varchar(64),
 	par_senha varchar(64),
 	par_inadmin char(1)
 )
 BEGIN
-	DECLARE par_numcelular, par_pessoa_id INT;
-    
+	DECLARE par_pessoa_id INT;
     
 	DECLARE MESSAGE varchar(1000);
     DECLARE EX SMALLINT DEFAULT 0;
@@ -306,27 +359,38 @@ BEGIN
 	DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SELECT 'ERROR: Erro no código SQL.' AS MESSAGE;
     START TRANSACTION;
     
-    SELECT nrocelular INTO par_numcelular FROM PRJM011003 WHERE nrocelular = par_nrocelular;
-    
-    IF par_numcelular IS NULL THEN
-		INSERT INTO PRJM011001 (dtcadastro) VALUES (now());
-        SET par_pessoa_id = LAST_INSERT_ID();
+	INSERT INTO PRJM011001 (dtcadastro) VALUES (now());
+	SET par_pessoa_id = LAST_INSERT_ID();
+	
+    IF EX = 1 THEN
+		SET MESSAGE = "ERROR: Não foi possível salvar registro na PRJM011001!!" ;
+	ELSE
+		INSERT INTO PRJM011002 (pessoa_id, usuario_id, nome,email, classificacao_id)
+        VALUES (par_pessoa_id,par_usuario_id,par_nome,par_email,par_classificacao_id);
         
-        INSERT INTO PRJM011002 (pessoa_id, usuario_id, nome, classificacao_id) VALUES (par_pessoa_id, par_usuario_id, par_nome, par_classificacao_id);
         IF EX = 1 THEN
-			SET MESSAGE = "ERROR: Não foi possível salvar os dados do cliente!!" ;
+			SET MESSAGE = "ERROR: Não foi possível salvar os dados do usuário!!" ;
 		ELSE
-			INSERT INTO PRJM011003 (pessoa_id, nrocelular) VALUES (par_pessoa_id, par_nrocelular);
+			IF par_nrocelular IS NOT NULL THEN
+				INSERT INTO PRJM011003 (pessoa_id, nrocelular) VALUES (par_pessoa_id,par_nrocelular);
+				IF EX = 1 THEN
+					SET MESSAGE = "ERROR: Não foi possível salvar o telefone!!" ;
+				END IF ;
+            END IF ;
+            
+            INSERT INTO PRJM011004 (pessoa_id, login, senha, inadmin) VALUES (par_pessoa_id, par_login, par_senha, par_inadmin);
 			IF EX = 1 THEN
-				SET MESSAGE = "ERROR: Não foi possível salvar o elefone do cliente!!" ;
+				SET MESSAGE = "ERROR: Não foi possível salvar o login!!" ;
 			END IF ;
-        END IF ;
-    END IF;
+			
+		END IF ;
+	END IF ;
+    
     IF EX = 1 THEN
 		SELECT MESSAGE;
 		ROLLBACK;
 	ELSE
-		SET MESSAGE = "SUCCESS: Cliente cadastrado com sucesso!!" ;
+		SET MESSAGE = "SUCCESS: Usuário cadastrado com sucesso!!" ;
         SELECT MESSAGE;
 		COMMIT;
 	END IF;
@@ -336,7 +400,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `prc_user_update` */;
+/*!50003 DROP PROCEDURE IF EXISTS `prc_pessoa_update` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -346,12 +410,17 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_user_update`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_pessoa_update`(
 	par_usuario_id int(11),
 	par_pessoa_id int(11),
+	par_nome varchar(256),
+	par_nrocelular varchar(11),
+	par_email varchar(64),
+	par_classificacao_id int(11),
 	par_login varchar(64),
 	par_senha varchar(64),
-	par_inadmin int(11)
+	par_inadmin int(11),
+	par_situacao char(1)
 )
 BEGIN
 	DECLARE MESSAGE varchar(1000);
@@ -361,16 +430,114 @@ BEGIN
 	DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SELECT 'ERROR: Erro no código SQL.' AS MESSAGE;
     START TRANSACTION;
     
+    UPDATE PRJM011001
+	SET
+		situacao	= par_situacao
+	WHERE pessoa_id = par_pessoa_id;
     
+    IF EX = 1 THEN
+		SET MESSAGE = "ERROR: Erro ao atualizar os dados na PRJM011001!!" ;
+	ELSE
+		UPDATE PRJM011002
+		SET
+			usuario_id			= par_usuario_id,
+			nome 				= par_nome,
+			email				= par_email,
+			classificacao_id	= par_classificacao_id
+		WHERE pessoa_id = par_pessoa_id;
+        
+        IF EX = 1 THEN
+			SET MESSAGE = "ERROR: Erro ao atualizar os dados na PRJM011002!!" ;
+		ELSE
+			UPDATE PRJM011003
+			SET
+				nrocelular			= par_nrocelular
+			WHERE pessoa_id = par_pessoa_id;
+            
+            IF EX = 1 THEN
+				SET MESSAGE = "ERROR: Erro ao atualizar os dados na PRJM011003!!" ;
+			ELSE
+				UPDATE PRJM011004
+				SET
+					login 			= par_login,
+					senha			= par_senha,
+					inadmin			= par_inadmin
+				WHERE pessoa_id = par_pessoa_id;
+				
+				IF EX = 1 THEN
+					SET MESSAGE = "ERROR: Erro ao atualizar os dados na PRJM011004!!" ;
+				END IF;
+			END IF;
+		END IF;
+ 		
+	END IF;
+
     IF EX = 1 THEN
 		SELECT MESSAGE;
 		ROLLBACK;
 	ELSE
-		SET MESSAGE = "SUCCESS: Cliente cadastrado com sucesso!!" ;
+		SET MESSAGE = "SUCCESS: Cliente atualizado com sucesso!!" ;
         SELECT MESSAGE;
 		COMMIT;
 	END IF;
     
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `prc_usuario_lista` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_usuario_lista`()
+BEGIN
+	DECLARE MESSAGE varchar(1000);
+    DECLARE EX SMALLINT DEFAULT 0;
+	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET EX = 1;
+    DECLARE EXIT HANDLER FOR 1062 SELECT  "ERROR: ERRO de duplicidade do ID." AS MESSAGE;
+	DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SELECT 'ERROR: Erro no código SQL.' AS MESSAGE;
+    START TRANSACTION;
+
+	/*SELECT PRJM002.pessoa_id, PRJM002.nome, PRJM002.classificacao_id,
+			(SELECT count(usuario_id) FROM PRJM011004 ) as pgs,
+            PRJM003.celular_id, PRJM003.nrocelular,
+			PRJM004.usuario_id, PRJM004.login, PRJM004.senha, PRJM004.inadmin 
+	FROM PRJM011002 PRJM002 
+	INNER JOIN PRJM011003 PRJM003 ON PRJM003.pessoa_id = PRJM002.pessoa_id 
+	INNER JOIN PRJM011004 PRJM004 ON PRJM004.pessoa_id = PRJM002.pessoa_id */
+    
+    SET @sql = concat('SELECT PRJM002.pessoa_id, PRJM002.nome, PRJM002.classificacao_id, ');
+    SET @sql = concat(@sql, ' (SELECT count(usuario_id) FROM PRJM011004 ) as pgs, ');
+    SET @sql = concat(@sql, ' PRJM003.celular_id, PRJM003.nrocelular, ');
+    SET @sql = concat(@sql, ' PRJM004.usuario_id, PRJM004.login, PRJM004.senha, PRJM004.inadmin ');
+    SET @sql = concat(@sql, ' FROM PRJM011002 PRJM002  ');
+	SET @sql = concat(@sql, '	INNER JOIN PRJM011001 PRJM001 ON PRJM001.pessoa_id = PRJM002.pessoa_id ');
+	SET @sql = concat(@sql, '	INNER JOIN PRJM011003 PRJM003 ON PRJM003.pessoa_id = PRJM002.pessoa_id ');
+	SET @sql = concat(@sql, '	INNER JOIN PRJM011004 PRJM004 ON PRJM004.pessoa_id = PRJM002.pessoa_id ');
+	SET @sql = concat(@sql, ' WHERE PRJM001.situacao = 0  AND PRJM002.classificacao_id != 3');
+    
+	SET @sql = concat(@sql, ' ORDER BY PRJM002.nome; ');
+    
+    PREPARE STMT FROM @sql;
+    EXECUTE STMT;
+    
+    IF EX = 1 THEN
+		SET MESSAGE = "ERROR: Erro ao filtrar Usuários!!" ;
+        SELECT MESSAGE;
+		ROLLBACK;
+	ELSE
+		SET MESSAGE = "SUCCESS: Usuários filtrado com sucesso!!" ;
+        SELECT MESSAGE;
+		COMMIT;
+	END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -387,4 +554,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-19 17:48:21
+-- Dump completed on 2021-07-20 17:28:15

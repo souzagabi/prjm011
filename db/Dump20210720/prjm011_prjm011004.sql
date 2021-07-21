@@ -18,35 +18,33 @@ USE `prjm011`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `prjm011002`
+-- Table structure for table `prjm011004`
 --
 
-DROP TABLE IF EXISTS `prjm011002`;
+DROP TABLE IF EXISTS `prjm011004`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `prjm011002` (
+CREATE TABLE `prjm011004` (
+  `usuario_id` int NOT NULL AUTO_INCREMENT,
   `pessoa_id` int NOT NULL,
-  `usuario_id` int DEFAULT NULL,
-  `nome` varchar(256) NOT NULL,
-  `email` varchar(64) DEFAULT NULL,
-  `classificacao_id` int DEFAULT NULL,
+  `login` varchar(64) NOT NULL,
+  `senha` varchar(64) NOT NULL,
+  `inadmin` char(1) DEFAULT NULL,
   `dtregistro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`pessoa_id`),
-  KEY `FK_PRJM011002_PRJM011001_idx` (`pessoa_id`) /*!80000 INVISIBLE */,
-  KEY `fk_PRJM011002_PRJM011005_idx` (`classificacao_id`),
-  KEY `fk_PRJM011002_PRJM011004_idx` (`usuario_id`) /*!80000 INVISIBLE */,
-  CONSTRAINT `fk_PRJM011002_PRJM011001` FOREIGN KEY (`pessoa_id`) REFERENCES `prjm011001` (`pessoa_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`usuario_id`),
+  KEY `FK_PRJM011004_PRJM011002_idx` (`pessoa_id`),
+  CONSTRAINT `fk_PRJM011004_PRJM011002` FOREIGN KEY (`pessoa_id`) REFERENCES `prjm011002` (`pessoa_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `prjm011002`
+-- Dumping data for table `prjm011004`
 --
 
-LOCK TABLES `prjm011002` WRITE;
-/*!40000 ALTER TABLE `prjm011002` DISABLE KEYS */;
-INSERT INTO `prjm011002` VALUES (1,NULL,'ADMINISTRADOR DO SISTEMA','souteramoto@gmail.com',3,'2021-07-16 07:54:15');
-/*!40000 ALTER TABLE `prjm011002` ENABLE KEYS */;
+LOCK TABLES `prjm011004` WRITE;
+/*!40000 ALTER TABLE `prjm011004` DISABLE KEYS */;
+INSERT INTO `prjm011004` VALUES (1,1,'admin','$2y$12$3d/flNuvxE..kJ57Pz/AU.TCmhw/73DKUue33/DgAHw8tm0G6KYRa','1','2021-07-16 08:57:30');
+/*!40000 ALTER TABLE `prjm011004` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -58,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-19 17:48:20
+-- Dump completed on 2021-07-20 17:28:15

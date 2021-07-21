@@ -18,8 +18,36 @@ USE `prjm011`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping events for database 'prjm011'
+-- Table structure for table `prjm011002`
 --
+
+DROP TABLE IF EXISTS `prjm011002`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `prjm011002` (
+  `pessoa_id` int NOT NULL,
+  `usuario_id` int DEFAULT NULL,
+  `nome` varchar(256) NOT NULL,
+  `email` varchar(64) DEFAULT NULL,
+  `classificacao_id` int DEFAULT NULL,
+  `dtregistro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`pessoa_id`),
+  KEY `FK_PRJM011002_PRJM011001_idx` (`pessoa_id`) /*!80000 INVISIBLE */,
+  KEY `fk_PRJM011002_PRJM011005_idx` (`classificacao_id`),
+  KEY `fk_PRJM011002_PRJM011004_idx` (`usuario_id`) /*!80000 INVISIBLE */,
+  CONSTRAINT `fk_PRJM011002_PRJM011001` FOREIGN KEY (`pessoa_id`) REFERENCES `prjm011001` (`pessoa_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `prjm011002`
+--
+
+LOCK TABLES `prjm011002` WRITE;
+/*!40000 ALTER TABLE `prjm011002` DISABLE KEYS */;
+INSERT INTO `prjm011002` VALUES (1,1,'ADMINISTRADOR DO SISTEMA','souteramoto@gmail.com',1,'2021-07-16 07:54:15');
+/*!40000 ALTER TABLE `prjm011002` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -30,4 +58,4 @@ USE `prjm011`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-19  6:10:22
+-- Dump completed on 2021-07-20 17:28:15
