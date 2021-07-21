@@ -142,6 +142,12 @@ function removeMensagem(){
             msg.parentNode.removeChild(msg);   
         }, 2000);
     }
+    if (document.getElementById("msg-warning")) {
+        setTimeout(function(){ 
+            var msg = document.getElementById("msg-warning");
+            msg.parentNode.removeChild(msg);   
+        }, 2000);
+    }
 }
 
 document.onreadystatechange = () => {

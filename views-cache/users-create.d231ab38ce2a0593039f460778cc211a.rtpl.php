@@ -1,4 +1,4 @@
-<!-- Content Wrapper. Contains page content -->
+<?php if(!class_exists('Rain\Tpl')){exit;}?><!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -78,9 +78,9 @@
                 <label for="classificacao_id">Classificação</label><strong class="obrigatorio"> *</strong>
                 <select class="form-control" name="classificacao_id" id="classificacao_id" required>
                   <option value="">Selecione...</option>
-                  {loop="$classificacoes"}
-                  <option value="{$value.classificacao_id}">{$value.descricao}</option>
-                  {/loop}
+                  <?php $counter1=-1;  if( isset($classificacoes) && ( is_array($classificacoes) || $classificacoes instanceof Traversable ) && sizeof($classificacoes) ) foreach( $classificacoes as $key1 => $value1 ){ $counter1++; ?>
+                  <option value="<?php echo htmlspecialchars( $value1["classificacao_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["descricao"], ENT_COMPAT, 'UTF-8', FALSE ); ?></option>
+                  <?php } ?>
                 </select>
               </div>
             </div>

@@ -8,10 +8,17 @@
         public static function listAll($act)
         {
             $sql = new Sql();
-
-            return $sql->select("CALL prc_cliente_lista(:nrocelular)", array(
-                ":nrocelular"=>$act["nrocelular"]
+            
+            $results = $sql->select("CALL prc_cliente_lista(:nrocelular, :nome)", array(
+                ":nrocelular"=>$act["nrocelular"],
+                ":nome"=>$act["nome"],
             ));
+
+            if ($results == '' || $results == NULL) {
+                $results[0]["MESSAGE"] = "Não há registros com a informação: ".$act['nrocelular']." ".$act['nome'].".";
+            }
+            
+            return $results;
         }
 
         public static function listClassification()
@@ -36,11 +43,7 @@
         public function save()
         {
             $sql = new Sql();
-            // echo '<pre>';                                         
-            // print_r($this);
-            // echo '</pre>';
-            //exit;
-            
+        
             $results = $sql->select("CALL prc_cliente_save(:usuario_id, :nome, :nrocelular, :classificacao_id)", array(
                 ":usuario_id"           => $this->getusuario_id(),   
                 ":nome"                 => $this->getnome(),   
@@ -57,13 +60,14 @@
         {
             $sql = new Sql();
                        
-            $results = $sql->select("CALL prc_cliente_update(:usuario_id,:pessoa_id,:celular_id, :nome, :nrocelular,:classificacao_id)", array(
+            $results = $sql->select("CALL prc_cliente_update(:usuario_id,:pessoa_id,:celular_id, :nome, :nrocelular,:classificacao_id,:situacao)", array(
                 ":usuario_id"           => $this->getusuario_id(),   
                 ":pessoa_id"            => $this->getpessoa_id(),
                 ":celular_id"           => $this->getcelular_id(),
                 ":nome"                 => $this->getnome(),   
                 ":nrocelular"           => $this->getnrocelular(),   
-                ":classificacao_id"     => $this->getclassificacao_id()
+                ":classificacao_id"     => $this->getclassificacao_id(),
+                ":situacao"             => $this->getsituacao()
             ));
            
             $this->setData($results);
@@ -74,9 +78,12 @@
         {
             $sql = new Sql();
             
-            $sql->query("CALL prc_cliente_delete(:pessoa_id)", array(
+            $results = $sql->select("CALL prc_pessoa_delete(:pessoa_id)", array(
                 ":pessoa_id"=>$this->getpessoa_id()
             ));
+            
+            $this->setData($results);
+            return $results[0]["MESSAGE"];
         }
     }
 ?>

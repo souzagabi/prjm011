@@ -41,9 +41,15 @@
     </div>
     <div id="msg{if="$msg.state == 'SUCCESS'"}-success{else}-danger{/if}" 
           class="box box-{if="$msg.state == 'SUCCESS'"}-success{else}danger{/if}" 
-          {if="$msg.state != 'SUCCESS' && $msg.state != 'ERROR'"}readonly hidden{/if}>
+          {if="$msg.state != 'SUCCESS' && $msg.state != 'ERROR' && $msg.state != 'ERROR'"}readonly hidden{/if}>
       <div class="msg"><input type="text" class="form-control msg-{if="$msg.state == 'SUCCESS' "}success alert-success{else}danger alert-danger{/if}" name="msg" value="{$msg.msg}" ></div>
     </div>
+    <div id="msg{if="$msgW.state == 'WARNING'"}-warning{/if}" 
+          class="box box-{if="$msgW.state == 'WARNING'"}-warning{/if}" 
+          {if="$msgW.state != 'WARNING'"}readonly hidden{/if}>
+      <div class="msg"><input type="text" class="form-control msg-{if="$msgW.state == 'WARNING' "}warning alert-warning{/if}" name="msgW" value="{$msgW.msg}" ></div>
+    </div>
+    <!--Paginação-->
     <div class="box box-primary" {if="!$pgs"}hidden{/if}>
       <div class="row">
         <div class="col col-md-12">
@@ -69,6 +75,7 @@
         </div>
       </div>
     </div>
+    <!--Fim Paginação-->
     <div class="box box-primary" {if="!$clientes"}hidden{/if}>
       <div class="box-body no-padding">
         <table class="table table-straped">
@@ -81,6 +88,7 @@
             </tr>
           </thead>
           <tbody>
+            {if="$msgW.state != 'WARNING'"}
             {loop="$clientes"}
             <tr>
               <th>{$value.pessoa_id}</th>
@@ -92,10 +100,12 @@
               </td>
             </tr>
             {/loop}
+            {/if}
           </tbody>
         </table>
       </div>
     </div>
+    <!--Paginação-->
     <div class="box box-primary" {if="!$pgs"}hidden{/if}>
       <div class="row">
         <div class="col col-md-12">
@@ -120,5 +130,6 @@
         </div>
       </div>
     </div>
+    <!--Fim Paginação-->
   </section>
 </div>
