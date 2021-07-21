@@ -1,5 +1,5 @@
 <?php
-// Função para converter base64 em imagem
+    // Função para converter base64 em imagem
     function converter_base64_para_imagem( $codigo_base64, $caminho, $nome_imagem = null ) {
         if ( !empty($codigo_base64) && !empty($caminho) ) :
             
@@ -23,11 +23,24 @@
             // Decodifica a imagem
             $imagem_decodificada = base64_decode( $array_string[1] );
             
-            // Salva a imagem no diretório
-            file_put_contents( $diretorio, $imagem_decodificada );
+            if(!file_exists($diretorio)){
+                // Salva a imagem no diretório
+                file_put_contents( $diretorio, $imagem_decodificada );
+             }
 
         endif;
     
     }
+    function passwordVerity($passUser)
+    {
+        alert("teste");
+        if (password_verify($passUser, $data["pass"]) === true) {
+                       
+            return true;
+        } else{
+            return false;
+        }
+    }
 
+    
 ?>

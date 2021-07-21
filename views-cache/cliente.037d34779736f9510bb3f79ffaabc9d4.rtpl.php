@@ -5,8 +5,8 @@
       Lista de Clientes
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active"><a href="/cliente">Clientes</a></li>
+      <li><a href="/cliente"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active">Clientes</li>
     </ol>
   </section>
   <!-- Main content -->
@@ -17,14 +17,17 @@
           <div class="col col-md-4">
             <form action="/cliente/create" method="get">
               <input type="submit" name="cliente" class="btn btn-success" value="Cadastrar Cliente">
-              <input type="text" name="cliente" value="cliente" hidden>
+              <!-- <?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>
+                <a href="/relatorio" name="relatorio" class="btn btn-primary pull-right" target="_blank">Relatório Cliente</a>
+              <?php } ?> -->
+              
             </form>
           </div>
           
           <form action="/cliente" method="get" <?php if( !$clientes ){ ?>hidden<?php } ?>>
             <div class="col col-md-2"></div>
             <div class="col col-md-2"><label for="nome">Nome</label><input type="text" name="nome" id="nome" class="form-control"></div>
-            <div class="col col-md-2"><label for="nrocelular">Telefone</label><input type="text" name="nrocelular" id="date_save" class="form-control" onChange="replaceSlash(date_save)"></div>
+            <div class="col col-md-2"><label for="nrocelular">Telefone</label><input type="text" name="nrocelular" id="date_save" class="form-control" maxlength="11" onChange="replaceSlash(date_save)"></div>
             <div class="col col-md-1"><label for="limit">Qtde</label>
               <select name="limit" id="limit" class="form-control">
                 <option value="10" selected>10</option>
@@ -81,7 +84,6 @@
         <table class="table table-straped">
           <thead class="thead-dark">
             <tr class="alert-warning">
-              <th>Código</th>
               <th>Nome</th>
               <th>Telefone</th>
               <th>Ação</th>
@@ -91,12 +93,11 @@
             <?php if( $msgW["state"] != 'WARNING' ){ ?>
             <?php $counter1=-1;  if( isset($clientes) && ( is_array($clientes) || $clientes instanceof Traversable ) && sizeof($clientes) ) foreach( $clientes as $key1 => $value1 ){ $counter1++; ?>
             <tr>
-              <th><?php echo htmlspecialchars( $value1["pessoa_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></th>
               <td><?php echo htmlspecialchars( $value1["nome"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
               <td><?php echo htmlspecialchars( $value1["nrocelular"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
               <td>
                 <a href="/cliente/<?php echo htmlspecialchars( $value1["pessoa_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
-                <a href="/cliente/<?php echo htmlspecialchars( $value1["pessoa_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                <?php if( $_SESSION['User']["inadmin"] == 1 ){ ?><a href="<?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>/cliente/<?php echo htmlspecialchars( $value1["pessoa_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/delete<?php }else{ ?>#<?php } ?>" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a><?php } ?>
               </td>
             </tr>
             <?php } ?>

@@ -84,3 +84,8 @@ form .obrigatorio{
     margin-bottom: 10px;
     margin-left: 20px;
 }
+.login-box-body{
+    background: #f58434 !important;
+    color: #fff;
+    font-size: 20px;
+}

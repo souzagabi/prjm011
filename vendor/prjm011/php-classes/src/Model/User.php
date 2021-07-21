@@ -66,8 +66,16 @@
 
         public static function listAll()
         {
-           $sql = new Sql();
-           $results = $sql->select("CALL prc_usuario_lista()");
+            $sql = new Sql();
+            $list["start"] = 0;
+            $pg = isset($_GET["pg"]) ? $_GET["pg"] : 1;
+            $list["limit"] = (isset($list["limit"]) && $list["limit"] != '') ? $list["limit"] : 10;
+            $list["start"] = ($pg - 1) * $list["limit"];
+
+            $results = $sql->select("CALL prc_usuario_lista(:start,:limit)",array(
+                ":start"=>$list["start"],
+                ":limit"=>$list["limit"]
+            ));
 
             if ($results == '' || $results == NULL) {
                 $results[0]["MESSAGE"] = "Não há registros a ser visualizado!!";

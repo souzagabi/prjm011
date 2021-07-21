@@ -34,7 +34,7 @@
             <div class="col col-md-2">
               <div class="form-group">
                 <label for="nrocelular">Telefone</label>
-                <input type="text" class="form-control" name="nrocelular" id="nrocelular" value="{$cliente.nrocelular}" required>
+                <input type="text" class="form-control" name="nrocelular" id="nrocelular" value="{$cliente.nrocelular}" maxlength="11" required>
               </div>
             </div>
             <div class="col col-md-2">
@@ -51,11 +51,13 @@
             </div>
             <div class="col col-md-2">
               <div class="form-group">
+                {if="$_SESSION['User'].inadmin == 1"}
                 <label for="situacao">Situação</label>
                 <select class="form-control" name="situacao" id="situacao">
                   <option value="0"{if="$cliente.situacao == 0"}selected{/if}>ATIVO</option>
                   <option value="1"{if="$cliente.situacao == 1"}selected{/if}>INATIVO</option>
                 </select>
+                {/if}
               </div>
             </div>
           </div>

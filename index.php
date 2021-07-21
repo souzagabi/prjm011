@@ -7,15 +7,14 @@
 	use \PRJM011\PageAdmin;
 	use \PRJM011\PageUser;
 	use \PRJM011\PageCliente;
+	use \PRJM011\PageRelatorio;
 	
 	use \PRJM011\Model\Metodo;
 	use \PRJM011\Model\User;
 	use \PRJM011\Model\Person;
 	use \PRJM011\Model\Cliente;
+	use \PRJM011\Model\Relatorio;
 	
-
-	include_once("./config/php/funcao.php");
-
 	date_default_timezone_set('America/Sao_Paulo');
 
 	$app = new Slim();
@@ -437,7 +436,21 @@
 		exit;
 		
 	});
-	
+
+/*======================================================================================*/
+/*									Rotas do Relatório									*/
+/*======================================================================================*/
+
+$app->get('/relatorio', function() {
+		
+	User::verifyLogin();
+		
+	Relatorio::converterParaPDF();
+
+});
+/*======================================================================================*/
+/*									Execução do Sistema									*/
+/*======================================================================================*/
 	$app->run();
 
 ?>

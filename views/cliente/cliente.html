@@ -5,8 +5,8 @@
       Lista de Clientes
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active"><a href="/cliente">Clientes</a></li>
+      <li><a href="/cliente"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active">Clientes</li>
     </ol>
   </section>
   <!-- Main content -->
@@ -17,14 +17,17 @@
           <div class="col col-md-4">
             <form action="/cliente/create" method="get">
               <input type="submit" name="cliente" class="btn btn-success" value="Cadastrar Cliente">
-              <input type="text" name="cliente" value="cliente" hidden>
+              <!-- {if="$_SESSION['User'].inadmin == 1"}
+                <a href="/relatorio" name="relatorio" class="btn btn-primary pull-right" target="_blank">Relatório Cliente</a>
+              {/if} -->
+              
             </form>
           </div>
           
           <form action="/cliente" method="get" {if="!$clientes"}hidden{/if}>
             <div class="col col-md-2"></div>
             <div class="col col-md-2"><label for="nome">Nome</label><input type="text" name="nome" id="nome" class="form-control"></div>
-            <div class="col col-md-2"><label for="nrocelular">Telefone</label><input type="text" name="nrocelular" id="date_save" class="form-control" onChange="replaceSlash(date_save)"></div>
+            <div class="col col-md-2"><label for="nrocelular">Telefone</label><input type="text" name="nrocelular" id="date_save" class="form-control" maxlength="11" onChange="replaceSlash(date_save)"></div>
             <div class="col col-md-1"><label for="limit">Qtde</label>
               <select name="limit" id="limit" class="form-control">
                 <option value="10" selected>10</option>
@@ -81,7 +84,6 @@
         <table class="table table-straped">
           <thead class="thead-dark">
             <tr class="alert-warning">
-              <th>Código</th>
               <th>Nome</th>
               <th>Telefone</th>
               <th>Ação</th>
@@ -91,12 +93,11 @@
             {if="$msgW.state != 'WARNING'"}
             {loop="$clientes"}
             <tr>
-              <th>{$value.pessoa_id}</th>
               <td>{$value.nome}</td>
               <td>{$value.nrocelular}</td>
               <td>
                 <a href="/cliente/{$value.pessoa_id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
-                <a href="/cliente/{$value.pessoa_id}/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                {if="$_SESSION['User'].inadmin == 1"}<a href="{if="$_SESSION['User'].inadmin == 1"}/cliente/{$value.pessoa_id}/delete{else}#{/if}" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>{/if}
               </td>
             </tr>
             {/loop}

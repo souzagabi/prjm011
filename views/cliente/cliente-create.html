@@ -38,7 +38,7 @@
             <div class="col col-md-2">
               <div class="form-group">
                 <label for="nrocelular">Telefone</label><strong class="obrigatorio"> *</strong>
-                <input type="text" class="form-control" name="nrocelular" id="nrocelular" required>
+                <input type="text" class="form-control" name="nrocelular" id="nrocelular" maxlength="11" required>
               </div>
             </div>
             <div class="col col-md-2">

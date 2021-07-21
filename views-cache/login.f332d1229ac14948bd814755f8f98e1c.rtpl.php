@@ -29,10 +29,13 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../config/index2.html"><b>ADJ</b> - SISTEMAS</a>
+    <img src="../../image/trevo.png" width="25px" height="25px" class="pull-left" alt="">
+    <b>Controle</b> de Cadastro
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
+    <img src="../../image/trevo2.png" width="50px" height="50px" class="pull-left" alt="">
+    <img src="../../image/trevo2.png" width="50px" height="50px" class="pull-right" alt="">
     <p class="login-box-msg">Logar para começar sua sessão</p>
     <div id="msg<?php if( $msg["state"] == 'SUCCESS' ){ ?>-success<?php }else{ ?>-danger<?php } ?>" 
           class="box box-<?php if( $msg["state"] == 'SUCCESS' ){ ?>-success<?php }else{ ?>danger<?php } ?>" 
@@ -49,32 +52,30 @@
         <input type="password" class="form-control" placeholder="Digite a Senha" name="senha">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
-      <div class="row">
-        <div class="col-xs-8">
+      <div class="form-group has-feedback">
+        <!-- <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
               <input type="checkbox"> Lembrar
             </label>
           </div>
-        </div>
+        </div> -->
         <!-- /.col -->
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Logar</button>
+        <div>
+          <button type="submit" class="btn btn-primary form-control">Logar</button>
         </div>
         <!-- /.col -->
       </div>
     </form>
 
-    <div class="social-auth-links text-center">
+    <!-- <div class="social-auth-links text-center">
       <p>- OU -</p>
       <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Logar usando
         Facebook</a>
       <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Logar usando
         Google+</a>
     </div>
-    <!-- /.social-auth-links -->
-
-    <a href="/admin/forgot">Esqueci a senha</a><br>
+    <a href="/admin/forgot">Esqueci a senha</a><br> -->
 
   </div>
   <!-- /.login-box-body -->

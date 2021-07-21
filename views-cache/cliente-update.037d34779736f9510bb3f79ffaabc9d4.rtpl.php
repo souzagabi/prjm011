@@ -34,7 +34,7 @@
             <div class="col col-md-2">
               <div class="form-group">
                 <label for="nrocelular">Telefone</label>
-                <input type="text" class="form-control" name="nrocelular" id="nrocelular" value="<?php echo htmlspecialchars( $cliente["nrocelular"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" required>
+                <input type="text" class="form-control" name="nrocelular" id="nrocelular" value="<?php echo htmlspecialchars( $cliente["nrocelular"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" maxlength="11" required>
               </div>
             </div>
             <div class="col col-md-2">
@@ -51,11 +51,13 @@
             </div>
             <div class="col col-md-2">
               <div class="form-group">
+                <?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>
                 <label for="situacao">Situação</label>
                 <select class="form-control" name="situacao" id="situacao">
                   <option value="0"<?php if( $cliente["situacao"] == 0 ){ ?>selected<?php } ?>>ATIVO</option>
                   <option value="1"<?php if( $cliente["situacao"] == 1 ){ ?>selected<?php } ?>>INATIVO</option>
                 </select>
+                <?php } ?>
               </div>
             </div>
           </div>
