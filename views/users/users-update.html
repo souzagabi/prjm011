@@ -91,8 +91,8 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
-              <button type="submit" id="btnSubmit" class="btn btn-success" style="display: none;">Atualizar</button>
-              <a href="/users?limit=10" class="btn btn-warning">Voltar</a>
+              <button type="submit" id="btnSubmit" class="btn btn-success" style="display: none;">Atualizar Usuário&nbsp;&nbsp;<i class="fa fa-save"></i></button>
+              <a href="/users?limit=10" class="btn btn-warning">Voltar&nbsp;&nbsp;<i class="fa fa-undo"></i></a>
 
             </div>
         </form>

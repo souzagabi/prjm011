@@ -16,8 +16,9 @@
 	use \PRJM011\Model\Relatorio;
 	
 	use \Dompdf\Dompdf;
+	use Dompdf\Options;
 
-	require_once("lib/dompdf/autoload.inc.php");
+	require_once("vendor/dompdf/dompdf/autoload.inc.php");
 	
 	date_default_timezone_set('America/Sao_Paulo');
 
@@ -448,8 +449,11 @@
 	$app->get('/relatorio', function() {
 		
 		User::verifyLogin();
-			
-		$pdf = new DOMPDF();
+		$opcao = new Options();	
+		$opcao->setChroot(__DIR__.'/image/');
+		$opcao->setIsRemoteEnabled(true);
+
+		$pdf = new DOMPDF($opcao);
 		$company["nome"]		= NULL;
 		$company["nrocelular"]	= NULL;
 		$company["cliente"]	= "cliente";
@@ -462,29 +466,40 @@
 		if (isset($clientes[0]["MESSAGE"])) {
 			$html = '<h3 style="text-align: center; color: red;">Não há registro para ser filtrado</h3>';
 		} else {
+			$html .= '<table width="100%" class="table-bordered" border=1>';
+			$html .= '<thead>';
+			$html .= '<tr>';
+			$html .= '<td style="font-family: sans-serif;background-color:#eee; padding:10px 0 10px 20px"><strong>Nome</strong></td>';
+			$html .= '<td style="font-family: sans-serif;background-color:#eee; padding:10px 0 10px 20px"><strong>Celular</strong></td>';
+			$html .= '</tr>';
+			$html .= '</thead>';
+
 			for ($i=0; $i < count($clientes) ; $i++) { 
-				$html .= '<table><tr><th width="5%">Nome</th>';
-				$html .= '<td width="55%">';
-				$html .= $clientes[$i]["nome"];
-				$html .= '</td>';
-				$html .= '<td>';
-				$html .= '&nbsp;&nbsp;&nbsp;';
-				$html .= '</td>';
-				$html .= '<th width="5%">Celular</th>';
-				$html .= '<td width="35%">';
-				$html .= $clientes[$i]["nrocelular"];
-				$html .= '</td>';
+				$html .= '<tbody>';
+				$html .= '<tr>';
+				$html .= '<td style="font-family: sans-serif;padding:5px 0 5px 20px">'.$clientes[$i]["nome"].'</td>';
+				$html .= '<td style="font-family: sans-serif;padding:5px 0 5px 20px">'.$clientes[$i]["nrocelular"].'</td>';
 				$html .= '</tr>';
-				$html .= '</table>';
-				$html .="<hr><br>";
+				$html .= '</tbody>';
 				
 			}
+			$html .='</table>';
 		}
-		//Início da página
+		// Início da página
 		$pdf->load_html('
-			<h1 style="text-align: center;">Castratro de Clientes</h1>
+		<div class="row">
+			<div class="col col-md-2">
+				<!--<img class="pull-left" src="image/trevo.png" height="50" alt="">-->
+			</div>
+			<div class="col col-md-6">
+				<h1 style="text-align:center;"><b>Lista de Clientes</b></h1>
+			</div>
+		
+			<hr>
+		</div>
 			'.$html.'
 		');
+		//$pdf->loadHTMLFile(__DIR__.'/views/relatorio/relatorio.html');
 		
 		$pdf->render();
 
@@ -500,4 +515,4 @@
 	$app->run();
 
 ?>
-	
+

@@ -19,7 +19,7 @@
       <form action="/users/create" method="get">
         <div class="box box-primary">
           <div class="col form-control">
-            <input type="submit" name="users" class="btn btn-success" value="Cadastrar Usuário">
+            <button type="submit" name="users"  class="btn btn-success" >Cadastrar Usuário&nbsp;&nbsp;<i class="fa fa-save"></i></button>
           </div>
         </div>
       </form>

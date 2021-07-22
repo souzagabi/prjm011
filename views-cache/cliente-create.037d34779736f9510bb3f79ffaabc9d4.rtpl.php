@@ -56,9 +56,9 @@
           </div>
           <!-- /.box-body -->
           <div class="box-footer">
-            <input type="submit" id="compra" class="btn btn-success" value="Cadastrar Visita">
+            <button type="submit" id="compra" class="btn btn-success" >Cadastrar Cliente&nbsp;&nbsp;<i class="fa fa-save"></i></button>
             
-            <a href="/cliente?limit=10" class="btn btn-warning">Voltar</a>
+            <a href="/cliente?limit=10" class="btn btn-warning">Voltar&nbsp;&nbsp;<i class="fa fa-undo"></i></a>
             
           </div>
         </form>
