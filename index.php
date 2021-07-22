@@ -458,17 +458,27 @@
 		
 		$date = explode(" ",date('d-m-Y H:i:s'));
 		$html = "";
-		// echo '<pre>';
-		// print_r($clientes);
-		// echo '</pre>';
-		for ($i=0; $i < count($clientes) ; $i++) { 
-			$html .= "Nome: ".$clientes[$i]["nome"];
-			$html .= " Celular: ".$clientes[$i]["nrocelular"];
-			// foreach ($clientes[$i] as $key => $value) {
-			// 	 echo $key." = ".$value."<br>";
-			// }
-			$html .="<hr><br>";
-			
+		
+		if (isset($clientes[0]["MESSAGE"])) {
+			$html = '<h3 style="text-align: center; color: red;">Não há registro para ser filtrado</h3>';
+		} else {
+			for ($i=0; $i < count($clientes) ; $i++) { 
+				$html .= '<table><tr><th width="5%">Nome</th>';
+				$html .= '<td width="55%">';
+				$html .= $clientes[$i]["nome"];
+				$html .= '</td>';
+				$html .= '<td>';
+				$html .= '&nbsp;&nbsp;&nbsp;';
+				$html .= '</td>';
+				$html .= '<th width="5%">Celular</th>';
+				$html .= '<td width="35%">';
+				$html .= $clientes[$i]["nrocelular"];
+				$html .= '</td>';
+				$html .= '</tr>';
+				$html .= '</table>';
+				$html .="<hr><br>";
+				
+			}
 		}
 		//Início da página
 		$pdf->load_html('

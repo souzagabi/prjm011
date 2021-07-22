@@ -1,12 +1,12 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => '1.0.0+no-version-set',
-    'version' => '1.0.0.0',
+    'pretty_version' => 'dev-master',
+    'version' => 'dev-master',
     'aliases' => 
     array (
     ),
-    'reference' => NULL,
+    'reference' => 'c6832e5403a5a646b03f16a06e28523b7a3c69d1',
     'name' => 'souzagabi/prjm011',
   ),
   'versions' => 
@@ -40,12 +40,12 @@
     ),
     'souzagabi/prjm011' => 
     array (
-      'pretty_version' => '1.0.0+no-version-set',
-      'version' => '1.0.0.0',
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
       'aliases' => 
       array (
       ),
-      'reference' => NULL,
+      'reference' => 'c6832e5403a5a646b03f16a06e28523b7a3c69d1',
     ),
   ),
 );
