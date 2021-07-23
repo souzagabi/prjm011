@@ -40,16 +40,22 @@
               </div>
              <div class="col col-md-4">
                 <div class="form-group">
-                  <label for="email">Email</label><strong class="obrigatorio"> *</strong>
-                  <input type="text" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars( $user["email"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" placeholder="Digite o Email" required>
+                  <label for="email">Email</label>
+                  <input type="text" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars( $user["email"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" placeholder="Digite o Email">
+                </div>
+              </div>
+              <div class="col col-md-3">
+                <label for="inadmin">Acesso ao Sistema</label>
+                <div class="checkbox">
+                    <input type="checkbox" name="inadmin" value="1" <?php if( $user["inadmin"] == 1 ){ ?>checked<?php } ?>> Acesso de Administrador
                 </div>
               </div>
             </div>
             <div class="box-body">  
               <div class="col col-md-2">
                 <div class="form-group">
-                  <label for="nrocelular">Telefone</label>
-                  <input type="text" class="form-control" id="nrocelular" name="nrocelular" value="<?php echo htmlspecialchars( $user["nrocelular"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" placeholder="Digite o telefone">
+                  <label for="nrocelular">Telefone</label><strong class="obrigatorio"> *</strong>
+                  <input type="text" class="form-control" id="nrocelular" name="nrocelular" value="<?php echo htmlspecialchars( $user["nrocelular"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" placeholder="Digite o telefone" required>
                 </div>
               </div>
               <div class="col col-md-2">
@@ -70,15 +76,6 @@
                   <input type="password" class="form-control" id="confirmasenha" onChange="verifyConfPassWord(senha,confirmasenha,msgDanger)" placeholder="Digite a senha novamente" required>
                 </div>
               </div>
-              <div class="col col-md-2">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" name="inadmin" value="1" <?php if( $user["inadmin"] == 1 ){ ?>checked<?php } ?>> Acesso de Administrador
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="box-body">
               <div class="col col-md-2">
                 <div class="form-group">
                   <label for="situacao">Situação</label>

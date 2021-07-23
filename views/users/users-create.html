@@ -21,11 +21,17 @@
   </div>
   <div class="row">
   	<div class="col-md-12">
+      <div id="msg{if="$msg.state == 'SUCCESS'"}-success{else}-danger{/if}" 
+          class="box box-{if="$msg.state == 'SUCCESS'"}-success{else}danger{/if}" 
+          {if="$msg.state != 'SUCCESS' && $msg.state != 'ERROR' && $msg.state != 'ERROR'"}readonly hidden{/if}>
+        <div class="msg"><input type="text" class="form-control msg-{if="$msg.state == 'SUCCESS' "}success alert-success{else}danger alert-danger{/if}" name="msg" value="{$msg.msg}" ></div>
+      </div>
   		<div class="box box-success">
         <div class="box-header with-border">
           <h3 class="box-title">Novo Usuário</h3>
         </div>
         <!-- /.box-header -->
+
         <!-- form start -->
         <form role="form" action="/users/create" method="post">
           <div class="box-body">
@@ -37,8 +43,8 @@
             </div>
             <div class="col col-md-4">
               <div class="form-group">
-                <label for="email">Email</label><strong class="obrigatorio"> *</strong>
-                <input type="text" class="form-control" name="email" id="email" required>
+                <label for="email">Email</label>
+                <input type="text" class="form-control" name="email" id="email">
               </div>
             </div>
             <div class="col col-md-3">
@@ -51,8 +57,8 @@
           <div class="box-body">
             <div class="col col-md-2">
               <div class="form-group">
-                <label for="nrocelular">Telefone</label>
-                <input type="text" class="form-control" name="nrocelular" id="nrocelular">
+                <label for="nrocelular">Telefone</label><strong class="obrigatorio"> *</strong>
+                <input type="text" class="form-control" name="nrocelular" id="nrocelular" required>
               </div>
             </div>
             <div class="col col-md-2">
@@ -77,9 +83,8 @@
               <div class="form-group">
                 <label for="classificacao_id">Classificação</label><strong class="obrigatorio"> *</strong>
                 <select class="form-control" name="classificacao_id" id="classificacao_id" required>
-                  <option value="">Selecione...</option>
                   {loop="$classificacoes"}
-                  <option value="{$value.classificacao_id}">{$value.descricao}</option>
+                  <option value="{$value.classificacao_id}" {if="$value.classificacao_id == 2"}selected{/if}>{$value.descricao}</option>
                   {/loop}
                 </select>
               </div>

@@ -394,7 +394,7 @@
 		
 		$msg = $user->save();
 
-		header("Location: /users?msg=$msg");
+		header("Location: /users/create?msg=$msg");
 			exit;
 	});
 

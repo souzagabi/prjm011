@@ -19,102 +19,103 @@
       <form action="/users/create" method="get">
         <div class="box box-primary">
           <div class="col form-control">
-            <button type="submit" name="users"  class="btn btn-success" >Cadastrar Usuário&nbsp;&nbsp;<i class="fa fa-save"></i></button>
+            <button type="submit" id="users" class="btn btn-success">Cadastrar Usuário&nbsp;&nbsp;<i class="fa fa-save"></i></button>
           </div>
         </div>
       </form>
       <div id="msg{if="$msg.state == 'SUCCESS'"}-success{else}-danger{/if}" 
           class="box box-{if="$msg.state == 'SUCCESS'"}-success{else}danger{/if}" 
           {if="$msg.state != 'SUCCESS' && $msg.state != 'ERROR' && $msg.state != 'ERROR'"}readonly hidden{/if}>
-      <div class="msg"><input type="text" class="form-control msg-{if="$msg.state == 'SUCCESS' "}success alert-success{else}danger alert-danger{/if}" name="msg" value="{$msg.msg}" ></div>
-    </div>
-    <!--Paginação-->
-    <div class="box box-primary" {if="!$pgs"}hidden{/if}>
-      <div class="row">
-        <div class="col col-md-12">
-          <nav aria-label="Page navigation">
-            <ul class="pagination">
-              <li>
-                <a href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              {$i = 1}
-              {loop="$pgs"}
-              
-              <li><a href="users?pg={$i}{if="$pgs.list.usuario"}&usuario={$pgs.list.usuario}{/if}">{$i++}</a></li>
-              {/loop}
-              <li>
-                <a href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
+        <div class="msg"><input type="text" class="form-control msg-{if="$msg.state == 'SUCCESS' "}success alert-success{else}danger alert-danger{/if}" name="msg" value="{$msg.msg}" ></div>
+      </div>
+      <!--Paginação-->
+      <div class="box box-primary" {if="!$pgs"}hidden{/if}>
+        <div class="row">
+          <div class="col col-md-12">
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <li>
+                  <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                {$i = 1}
+                {loop="$pgs"}
+                
+                <li><a href="users?pg={$i}{if="$pgs.list.usuario"}&usuario={$pgs.list.usuario}{/if}">{$i++}</a></li>
+                {/loop}
+                <li>
+                  <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
-    </div>
-    <!--Fim Paginação-->
-    <div class="box box-primary" {if="$users == null"}hidden{/if}>
-      <div class="box-body no-padding">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th style="width: 10px">#</th>
-              <th>Nome</th>
-              <th>Telefone</th>
-              <th>Login</th>
-              <th style="width: 60px">Admin</th>
-              <th style="width: 140px">&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
-            {if="$msg.state != 'WARNING'"}
-            {loop="$users"}
-            <tr>
-              <td>{$value.pessoa_id}</td>
-              <td>{$value.nome}</td>
-              <td>{$value.nrocelular}</td>
-              <td>{$value.login}</td/>
-              <td>{if="$value.inadmin == 1"}Sim{else}Não{/if}</td>
-              <td>
-                <a href="/users/{$value.pessoa_id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
-                <a href="/users/{$value.pessoa_id}/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-              </td>
-            </tr>
-            {/loop}
-            {/if}
-          </tbody>
-        </table>
-      </div>
-  	</div>
-    <!--Paginação-->
-    <div class="box box-primary" {if="!$pgs"}hidden{/if}>
-      <div class="row">
-        <div class="col col-md-12">
-          <nav aria-label="Page navigation">
-            <ul class="pagination">
-              <li>
-                <a href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              {$i = 1}
-              {loop="$pgs"}
-              
-              <li><a href="users?pg={$i}{if="$pgs.list.usuario"}&usuario={$pgs.list.usuario}{/if}">{$i++}</a></li>
+      <!--Fim Paginação-->
+      <div class="box box-primary" {if="$users == null"}hidden{/if}>
+        <div class="box-body no-padding">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th style="width: 10px">#</th>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Login</th>
+                <th style="width: 60px">Admin</th>
+                <th style="width: 140px">&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              {if="$msg.state != 'WARNING'"}
+              {loop="$users"}
+              <tr>
+                <td>{$value.pessoa_id}</td>
+                <td>{$value.nome}</td>
+                <td>{$value.nrocelular}</td>
+                <td>{$value.login}</td/>
+                <td>{if="$value.inadmin == 1"}Sim{else}Não{/if}</td>
+                <td>
+                  <a href="/users/{$value.pessoa_id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
+                  <a href="/users/{$value.pessoa_id}/delete" onclick="return confirm('Deseja realmente excluir este registro?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </td>
+              </tr>
               {/loop}
-              <li>
-                <a href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
+              {/if}
+            </tbody>
+          </table>
         </div>
       </div>
+      <!--Paginação-->
+      <div class="box box-primary" {if="!$pgs"}hidden{/if}>
+        <div class="row">
+          <div class="col col-md-12">
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <li>
+                  <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                {$i = 1}
+                {loop="$pgs"}
+                
+                <li><a href="users?pg={$i}{if="$pgs.list.usuario"}&usuario={$pgs.list.usuario}{/if}">{$i++}</a></li>
+                {/loop}
+                <li>
+                  <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <!--Fim Paginação-->
     </div>
-    <!--Fim Paginação-->
   </div>
 </section>
 <!-- /.content -->
