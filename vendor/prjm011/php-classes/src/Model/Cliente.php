@@ -9,16 +9,21 @@
         {
             $sql = new Sql();
             
-            $list["start"] = 0;
-            $pg = isset($_GET["pg"]) ? $_GET["pg"] : 1;
-            $list["limit"] = (isset($list["limit"]) && $list["limit"] != '') ? $list["limit"] : 10;
-            $list["start"] = ($pg - 1) * $list["limit"];
+            if (!isset($list["report"])) {
+                $list["start"] = 0;
+                $pg = isset($_GET["pg"]) ? $_GET["pg"] : 1;
+                $list["limit"] = (isset($list["limit"]) && $list["limit"] != '') ? $list["limit"] : 10;
+                $list["start"] = ($pg - 1) * $list["limit"];
+            } else {
+                $list["limit"] = 0;
+                $list["start"] = 0;
+            }
             
             $results = $sql->select("CALL prc_cliente_lista(:nrocelular, :nome,:start,:limit)", array(
                 ":nrocelular"=>$list["nrocelular"],
                 ":nome"=>$list["nome"],
                 ":start"=> $list["start"],
-                ":limit"=>$list["limit"],
+                ":limit"=>$list["limit"]
             ));
 
             if ($results == '' || $results == NULL) {

@@ -30,6 +30,60 @@
 /*										Rotas do Cliente									*/
 /*======================================================================================*/
 
+	$app->get('/', function() 
+	{
+		
+		User::verifyLogin();
+		
+		$company["nome"]		= NULL;
+		$company["cliente"]		= NULL;
+		$company["search"]		= NULL;
+		$company["nrocelular"]	= NULL;
+		
+		$msg = ["state"=>'VAZIO', "msg"=> 'VAZIO'];		
+		$msgW = ["state"=>'VAZIO', "msg"=> 'VAZIO'];		
+		
+		if ((isset($_GET["msg"]) && $_GET["msg"] != '')) {
+			$mess = explode(':', $_GET["msg"]);
+			$msg = ["state"=>$mess[0], "msg"=> $mess[1]];
+			$_GET["msg"] = '';
+		} 
+		
+		foreach ($_GET as $key => $value) {
+			$company[$key] = $value;
+		}
+		
+		if (isset($_GET["search"])) {
+			$company["search"] 		= "search";
+
+		} 
+		$company["cliente"]	= "cliente";
+		
+		$clientes = Metodo::selectRegister($company);
+		
+		if (isset($clientes[0][0]["MESSAGE"])) {
+			$msgW = ["state"=>'WARNING', "msg"=> $clientes[0][0]["MESSAGE"]];
+		}
+
+		$j=[];
+		$k = 0;
+		for ($i=10; $i <= 200 ; $i+=10) 
+		{ 
+			$j[$k] = $i;
+			$k++;
+		}
+		
+		$page = new PageCliente();
+		
+		$page->setTpl("cliente", array(
+			"clientes"=>$clientes[0],
+			"pgs"=>$clientes[1],
+			"msg"=>$msg,
+			"msgW"=>$msgW,
+			"j"=>$j
+		));
+
+	});
 	$app->get('/cliente', function() 
 	{
 		
@@ -66,13 +120,22 @@
 			$msgW = ["state"=>'WARNING', "msg"=> $clientes[0][0]["MESSAGE"]];
 		}
 		
+		$j=[];
+		$k = 0;
+		for ($i=10; $i <= 200 ; $i+=10) 
+		{ 
+			$j[$k] = $i;
+			$k++;
+		}
+		
 		$page = new PageCliente();
 		
 		$page->setTpl("cliente", array(
 			"clientes"=>$clientes[0],
 			"pgs"=>$clientes[1],
 			"msg"=>$msg,
-			"msgW"=>$msgW
+			"msgW"=>$msgW,
+			"j"=>$j
 		));
 
 	});
@@ -457,57 +520,74 @@
 		$company["nome"]		= NULL;
 		$company["nrocelular"]	= NULL;
 		$company["cliente"]	= "cliente";
+		$company["report"]	= "report";
 			
 		$clientes = Cliente::listAll($company);
 		
 		$date = explode(" ",date('d-m-Y H:i:s'));
 		$html = "";
-		
-		if (isset($clientes[0]["MESSAGE"])) {
-			$html = '<h3 style="text-align: center; color: red;">Não há registro para ser filtrado</h3>';
-		} else {
-			$html .= '<table width="100%" class="table-bordered" border=1>';
-			$html .= '<thead>';
-			$html .= '<tr>';
-			$html .= '<td style="font-family: sans-serif;background-color:#eee; padding:10px 0 10px 20px"><strong>Nome</strong></td>';
-			$html .= '<td style="font-family: sans-serif;background-color:#eee; padding:10px 0 10px 20px"><strong>Celular</strong></td>';
-			$html .= '</tr>';
-			$html .= '</thead>';
+		$file = fopen('report\report.vcf', 'w+');
 
+		if (!isset($clientes[0]["MESSAGE"])) {
 			for ($i=0; $i < count($clientes) ; $i++) { 
-				$html .= '<tbody>';
-				$html .= '<tr>';
-				$html .= '<td style="font-family: sans-serif;padding:5px 0 5px 20px">'.$clientes[$i]["nome"].'</td>';
-				$html .= '<td style="font-family: sans-serif;padding:5px 0 5px 20px">'.$clientes[$i]["nrocelular"].'</td>';
-				$html .= '</tr>';
-				$html .= '</tbody>';
-				
+				$html .= 'BEGIN:VCARD'."\r\n";
+				$html .= 'VERSION:2.1'."\r\n";
+				$html .= 'N:;'.$clientes[$i]["nome"].';;;'."\r\n";
+				$html .= 'FN:'.$clientes[$i]["nome"]."\r\n";
+				$html .= 'TEL;CELL:'.$clientes[$i]["nrocelular"]."\r\n";
+				$html .= 'TEL;CELL:'.$clientes[$i]["nrocelular"]."\r\n";
+				$html .= 'END:VCARD'."\r\n";
 			}
-			$html .='</table>';
+			fwrite($file, $html);
+			
+			fclose($file);
 		}
-		// Início da página
-		$pdf->load_html('
-		<div class="row">
-			<div class="col col-md-2">
-				<!--<img class="pull-left" src="image/trevo.png" height="50" alt="">-->
-			</div>
-			<div class="col col-md-6">
-				<h1 style="text-align:center;"><b>Lista de Clientes</b></h1>
-			</div>
-		
-			<hr>
-		</div>
-			'.$html.'
-		');
-		//$pdf->loadHTMLFile(__DIR__.'/views/relatorio/relatorio.html');
-		
-		$pdf->render();
+		// if (isset($clientes[0]["MESSAGE"])) {
+		// 	$html = '<h3 style="text-align: center; color: red;">Não há registro para ser filtrado</h3>';
+		// } else {
+		// 	$html .= '<table width="100%" class="table-bordered" border=1>';
+		// 	$html .= '<thead>';
+		// 	$html .= '<tr>';
+		// 	$html .= '<td style="font-family: sans-serif;background-color:#eee; padding:10px 0 10px 20px"><strong>Nome</strong></td>';
+		// 	$html .= '<td style="font-family: sans-serif;background-color:#eee; padding:10px 0 10px 20px"><strong>Celular</strong></td>';
+		// 	$html .= '</tr>';
+		// 	$html .= '</thead>';
 
-		$pdf->stream(
-			"relatorio".$date[0]."_".$date[1].".pdf", array(
-				"Attachment"=> false
-		));
+		// 	for ($i=0; $i < count($clientes) ; $i++) { 
+		// 		$html .= '<tbody>';
+		// 		$html .= '<tr>';
+		// 		$html .= '<td style="font-family: sans-serif;padding:5px 0 5px 20px">'.$clientes[$i]["nome"].'</td>';
+		// 		$html .= '<td style="font-family: sans-serif;padding:5px 0 5px 20px">'.$clientes[$i]["nrocelular"].'</td>';
+		// 		$html .= '</tr>';
+		// 		$html .= '</tbody>';
+				
+		// 	}
+		// 	$html .='</table>';
+		// }
+		// // Início da página
+		// $pdf->load_html('
+		// <div class="row">
+		// 	<div class="col col-md-2">
+		// 		<!--<img class="pull-left" src="image/trevo.png" height="50" alt="">-->
+		// 	</div>
+		// 	<div class="col col-md-6">
+		// 		<h1 style="text-align:center;"><b>Lista de Clientes</b></h1>
+		// 	</div>
+		
+		// 	<hr>
+		// </div>
+		// 	'.$html.'
+		// ');
+		// $pdf->load_html($html);
+		// $pdf->render();
 
+		// $pdf->stream(
+		// 	"relatorio".$date[0]."_".$date[1].".vcf", array(
+		// 		"Attachment"=> false
+		// ));
+		$msg = "SUCCESS: Relatório gerado com sucesso.";
+		header("Location: /cliente?msg=".$msg);
+		exit;
 	});
 /*======================================================================================*/
 /*									Execução do Sistema									*/
