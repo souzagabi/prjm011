@@ -16,28 +16,30 @@
         <div class="row">
           <div class="col col-md-4">
             <form action="/cliente/create" method="get">
-              <input type="submit" name="cliente" class="btn btn-success" value="Cadastrar Cliente">
+              <button type="submit" name="cliente" class="btn btn-success">Cadastrar Cliente&nbsp;&nbsp;<i class="fa fa-save"></i></button>
               <?php if( $_SESSION['User']["inadmin"] == 1 ){ ?>
-                <a href="/relatorio" name="relatorio" class="btn btn-primary pull-right" target="_blank">Relatório Cliente</a>
+                <a href="/relatorio" name="relatorio" class="btn btn-primary pull-right">Relatório Cliente&nbsp;&nbsp;<i class="fa fa-clipboard"></i></a>
               <?php } ?>
               
             </form>
           </div>
           
           <form action="/cliente" method="get" <?php if( !$clientes ){ ?>hidden<?php } ?>>
-            <div class="col col-md-2"></div>
-            <div class="col col-md-2"><label for="nome">Nome</label><input type="text" name="nome" id="nome" class="form-control"></div>
+            <div class="col col-md-3"><label for="nome">Nome</label><input type="text" name="nome" id="nome" class="form-control"></div>
             <div class="col col-md-2"><label for="nrocelular">Telefone</label><input type="text" name="nrocelular" id="date_save" class="form-control" maxlength="11" onChange="replaceSlash(date_save)"></div>
             <div class="col col-md-1"><label for="limit">Qtde</label>
               <select name="limit" id="limit" class="form-control">
-                <option value="10" selected>10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-                <option value="30">30</option>
+                <?php $i=0; ?>
+                <?php $counter1=-1;  if( isset($j) && ( is_array($j) || $j instanceof Traversable ) && sizeof($j) ) foreach( $j as $key1 => $value1 ){ $counter1++; ?>
+                <option value="<?php echo htmlspecialchars( $i, ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $j["$i"], ENT_COMPAT, 'UTF-8', FALSE ); ?></option>
+                <?php echo htmlspecialchars( $i++, ENT_COMPAT, 'UTF-8', FALSE ); ?>
+                <?php } ?>
               </select>
             </div>
-            <input type="submit" name="search" class="btn btn-primary" value="Pesquisar">
+            
+            <div class="col col-md-1">
+              <button type="submit" name="search" class="btn btn-primary">Pesquisar&nbsp;&nbsp;<i class="fa fa-clipboard"></i></button>
+            </div>
           </form>
         </div>
       </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Manutenção | Log in</title>
+  <title>Lord | Lotérica</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -29,8 +29,8 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <img src="../../image/trevo.png" width="25px" height="25px" class="pull-left" alt="">
-    <b>Controle</b> de Cadastro
+    <b>Lord</b> Lotérica
+    <img src="../../image/admin2.png" class="img-circle" width="50px" height="50px" class="pull-right" alt="">
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -46,20 +46,13 @@
     <form action="/admin/login" method="post">
       <div class="form-group has-feedback">
         <input type="text" class="form-control" placeholder="Login" name="login" autofocus>
-        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <span class="fa fa-user form-control-feedback"></i></span>
       </div>
       <div class="form-group has-feedback">
         <input type="password" class="form-control" placeholder="Digite a Senha" name="senha">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <span class="fa fa-lock  form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <!-- <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox"> Lembrar
-            </label>
-          </div>
-        </div> -->
         <!-- /.col -->
         <div>
           <button type="submit" class="btn btn-primary form-control">Logar</button>
@@ -67,15 +60,6 @@
         <!-- /.col -->
       </div>
     </form>
-
-    <!-- <div class="social-auth-links text-center">
-      <p>- OU -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Logar usando
-        Facebook</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Logar usando
-        Google+</a>
-    </div>
-    <a href="/admin/forgot">Esqueci a senha</a><br> -->
 
   </div>
   <!-- /.login-box-body -->

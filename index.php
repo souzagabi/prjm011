@@ -525,8 +525,14 @@
 		$clientes = Cliente::listAll($company);
 		
 		$date = explode(" ",date('d-m-Y H:i:s'));
+		
+		$dir = 'report';
+		
+		if(!is_dir($dir))
+			mkdir($dir, 777);
+		
 		$html = "";
-		$file = fopen('report\report.vcf', 'w+');
+		$file = fopen($dir.'\report.vcf', 'w+');
 
 		if (!isset($clientes[0]["MESSAGE"])) {
 			for ($i=0; $i < count($clientes) ; $i++) { 
