@@ -1,4 +1,4 @@
-<!-- Content Wrapper. Contains page content -->
+<?php if(!class_exists('Rain\Tpl')){exit;}?><!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -29,25 +29,25 @@
         <!-- /.box-header -->
         <!-- form start -->
         
-        <form role="form" action="/users/{$user.pessoa_id}" method="post">
+        <form role="form" action="/users/<?php echo htmlspecialchars( $user["pessoa_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" method="post">
           <div class="box-body">
             <div class="box-body">
               <div class="col col-md-4">
                 <div class="form-group">
                   <label for="nome">Nome</label><strong class="obrigatorio"> *</strong>
-                  <input type="text" class="form-control" id="nome" name="nome" value="{$user.nome}" onkeyup="convertLowToUpper(nome)" placeholder="Digite o nome" required>
+                  <input type="text" class="form-control" id="nome" name="nome" value="<?php echo htmlspecialchars( $user["nome"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" onkeyup="convertLowToUpper(nome)" placeholder="Digite o nome" required>
                 </div>
               </div>
              <div class="col col-md-4">
                 <div class="form-group">
                   <label for="email">Email</label>
-                  <input type="text" class="form-control" id="email" name="email" value="{$user.email}" placeholder="Digite o Email">
+                  <input type="text" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars( $user["email"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" placeholder="Digite o Email">
                 </div>
               </div>
               <div class="col col-md-3">
                 <label for="inadmin">Acesso ao Sistema</label>
                 <div class="checkbox">
-                    <input type="checkbox" name="inadmin" value="1" {if="$user.inadmin == 1"}checked{/if}> Acesso de Administrador
+                    <input type="checkbox" name="inadmin" value="1" <?php if( $user["inadmin"] == 1 ){ ?>checked<?php } ?>> Acesso de Administrador
                 </div>
               </div>
             </div>
@@ -55,13 +55,13 @@
               <div class="col col-md-2">
                 <div class="form-group">
                   <label for="nrocelular">Telefone</label><strong class="obrigatorio"> *</strong>
-                  <input type="text" class="form-control" id="nrocelular" name="nrocelular" value="{$user.nrocelular}" placeholder="Digite o telefone" required>
+                  <input type="text" class="form-control" id="nrocelular" name="nrocelular" value="<?php echo htmlspecialchars( $user["nrocelular"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" placeholder="Digite o telefone" required>
                 </div>
               </div>
               <div class="col col-md-2">
                 <div class="form-group">
                   <label for="login">Login</label><strong class="obrigatorio"> *</strong>
-                  <input type="text" class="form-control" id="login" name="login" value="{$user.login}" placeholder="Digite o login" required>
+                  <input type="text" class="form-control" id="login" name="login" value="<?php echo htmlspecialchars( $user["login"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" placeholder="Digite o login" required>
                 </div>
               </div>
               <div class="col col-md-3">
@@ -80,8 +80,8 @@
                 <div class="form-group">
                   <label for="situacao">Situação</label>
                   <select class="form-control" name="situacao" id="situacao">
-                    <option value="0"{if="$user.situacao == 0"}selected{/if}>ATIVO</option>
-                    <option value="1"{if="$user.situacao == 1"}selected{/if}>INATIVO</option>
+                    <option value="0"<?php if( $user["situacao"] == 0 ){ ?>selected<?php } ?>>ATIVO</option>
+                    <option value="1"<?php if( $user["situacao"] == 1 ){ ?>selected<?php } ?>>INATIVO</option>
                   </select>
                 </div>
               </div>

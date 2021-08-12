@@ -18,31 +18,33 @@ USE `prjm011`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `prjm011003`
+-- Table structure for table `prjm011004`
 --
 
-DROP TABLE IF EXISTS `prjm011003`;
+DROP TABLE IF EXISTS `prjm011004`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `prjm011003` (
-  `celular_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `prjm011004` (
+  `usuario_id` int NOT NULL AUTO_INCREMENT,
   `pessoa_id` int NOT NULL,
-  `nrocelular` varchar(11) NOT NULL,
+  `login` varchar(64) NOT NULL,
+  `senha` varchar(64) NOT NULL,
+  `inadmin` char(1) DEFAULT NULL,
   `dtregistro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`celular_id`),
-  KEY `FK_PRJM011003_PRJM011002_idx` (`pessoa_id`),
-  CONSTRAINT `fk_PRJM011003_PRJM011002` FOREIGN KEY (`pessoa_id`) REFERENCES `prjm011002` (`pessoa_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`usuario_id`),
+  KEY `FK_PRJM011004_PRJM011002_idx` (`pessoa_id`),
+  CONSTRAINT `fk_PRJM011004_PRJM011002` FOREIGN KEY (`pessoa_id`) REFERENCES `prjm011002` (`pessoa_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `prjm011003`
+-- Dumping data for table `prjm011004`
 --
 
-LOCK TABLES `prjm011003` WRITE;
-/*!40000 ALTER TABLE `prjm011003` DISABLE KEYS */;
-INSERT INTO `prjm011003` VALUES (1,1,'14997506620','2021-07-16 08:09:05'),(2,2,'1','2021-07-28 13:48:26'),(3,3,'14995452321','2021-07-29 16:52:57'),(4,4,'14998562354','2021-07-29 18:27:34'),(5,5,'1434256034','2021-07-29 18:27:43'),(6,6,'14995620178','2021-07-29 18:29:33'),(7,7,'14995620187','2021-07-29 18:29:39'),(8,8,'14995620188','2021-07-29 18:29:50'),(9,9,'15233322222','2021-07-29 18:30:06'),(10,10,'43212354555','2021-07-29 18:30:16'),(11,11,'12345678900','2021-07-29 18:30:27'),(12,12,'12365498745','2021-07-29 18:31:11'),(13,13,'65478965112','2021-07-29 18:31:20');
-/*!40000 ALTER TABLE `prjm011003` ENABLE KEYS */;
+LOCK TABLES `prjm011004` WRITE;
+/*!40000 ALTER TABLE `prjm011004` DISABLE KEYS */;
+INSERT INTO `prjm011004` VALUES (1,1,'admin','$2y$12$3d/flNuvxE..kJ57Pz/AU.TCmhw/73DKUue33/DgAHw8tm0G6KYRa','1','2021-07-16 08:57:30'),(2,2,'lord','$2y$12$Cj4pEsIAsLJ/Z8FkxKruf.WTYtIKxkn7Lswt0jDias5VUWPqVdM5e','0','2021-07-28 13:48:26'),(3,3,'sueli','$2y$12$Vb5zNx1jiyiyuizs3WLRFe.OH9/.Tmputq9diVyZnrLjCdxzJt3ye','1','2021-08-09 11:06:13');
+/*!40000 ALTER TABLE `prjm011004` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-29 16:55:36
+-- Dump completed on 2021-08-09 15:18:03

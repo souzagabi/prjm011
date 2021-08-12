@@ -18,33 +18,28 @@ USE `prjm011`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `prjm011004`
+-- Table structure for table `prjm011005`
 --
 
-DROP TABLE IF EXISTS `prjm011004`;
+DROP TABLE IF EXISTS `prjm011005`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `prjm011004` (
-  `usuario_id` int NOT NULL AUTO_INCREMENT,
-  `pessoa_id` int NOT NULL,
-  `login` varchar(64) NOT NULL,
-  `senha` varchar(64) NOT NULL,
-  `inadmin` char(1) DEFAULT NULL,
+CREATE TABLE `prjm011005` (
+  `classificacao_id` int NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(50) NOT NULL,
   `dtregistro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`usuario_id`),
-  KEY `FK_PRJM011004_PRJM011002_idx` (`pessoa_id`),
-  CONSTRAINT `fk_PRJM011004_PRJM011002` FOREIGN KEY (`pessoa_id`) REFERENCES `prjm011002` (`pessoa_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`classificacao_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `prjm011004`
+-- Dumping data for table `prjm011005`
 --
 
-LOCK TABLES `prjm011004` WRITE;
-/*!40000 ALTER TABLE `prjm011004` DISABLE KEYS */;
-INSERT INTO `prjm011004` VALUES (1,1,'admin','$2y$12$3d/flNuvxE..kJ57Pz/AU.TCmhw/73DKUue33/DgAHw8tm0G6KYRa','1','2021-07-16 08:57:30'),(2,2,'lord','$2y$12$Cj4pEsIAsLJ/Z8FkxKruf.WTYtIKxkn7Lswt0jDias5VUWPqVdM5e','0','2021-07-28 13:48:26');
-/*!40000 ALTER TABLE `prjm011004` ENABLE KEYS */;
+LOCK TABLES `prjm011005` WRITE;
+/*!40000 ALTER TABLE `prjm011005` DISABLE KEYS */;
+INSERT INTO `prjm011005` VALUES (1,'ADMINISTRADOR','2021-07-16 08:03:04'),(2,'COLABORADOR','2021-07-16 08:03:19'),(3,'CLIENTE','2021-07-16 08:03:23');
+/*!40000 ALTER TABLE `prjm011005` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-07-29 16:55:37
+-- Dump completed on 2021-08-09 15:18:02

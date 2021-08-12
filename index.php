@@ -32,58 +32,18 @@
 
 	$app->get('/', function() 
 	{
-		
-		User::verifyLogin();
-		
-		$company["nome"]		= NULL;
-		$company["cliente"]		= NULL;
-		$company["search"]		= NULL;
-		$company["nrocelular"]	= NULL;
-		
-		$msg = ["state"=>'VAZIO', "msg"=> 'VAZIO'];		
-		$msgW = ["state"=>'VAZIO', "msg"=> 'VAZIO'];		
-		
-		if ((isset($_GET["msg"]) && $_GET["msg"] != '')) {
-			$mess = explode(':', $_GET["msg"]);
-			$msg = ["state"=>$mess[0], "msg"=> $mess[1]];
-			$_GET["msg"] = '';
-		} 
-		
-		foreach ($_GET as $key => $value) {
-			$company[$key] = $value;
+		if (!isset($_SESSION[User::SESSION]) || !(int)$_SESSION[User::SESSION]["usuario_id"] > 0  )
+		{
+			header("Location: /admin/login");
+			exit;
+		} else {
+			var_dump($msg);exit;
+			header("Location: /cliente");
+			exit;
 		}
-		
-		if (isset($_GET["search"])) {
-			$company["search"] 		= "search";
-
-		} 
-		$company["cliente"]	= "cliente";
-		
-		$clientes = Metodo::selectRegister($company);
-		
-		if (isset($clientes[0][0]["MESSAGE"])) {
-			$msgW = ["state"=>'WARNING', "msg"=> $clientes[0][0]["MESSAGE"]];
-		}
-
-		$j=[];
-		$k = 0;
-		for ($i=10; $i <= 200 ; $i+=10) 
-		{ 
-			$j[$k] = $i;
-			$k++;
-		}
-		
-		$page = new PageCliente();
-		
-		$page->setTpl("cliente", array(
-			"clientes"=>$clientes[0],
-			"pgs"=>$clientes[1],
-			"msg"=>$msg,
-			"msgW"=>$msgW,
-			"j"=>$j
-		));
 
 	});
+
 	$app->get('/cliente', function() 
 	{
 		
